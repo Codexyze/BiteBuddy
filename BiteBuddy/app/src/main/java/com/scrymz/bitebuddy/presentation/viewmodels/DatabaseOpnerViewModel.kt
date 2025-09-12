@@ -7,6 +7,7 @@ import com.scrymz.bitebuddy.core.DataBaseOpenHelper
 import com.scrymz.bitebuddy.domain.StateHandeling.ResultState
 import com.scrymz.bitebuddy.presentation.states.CopyDatabaseState
 import com.scrymz.bitebuddy.presentation.states.GetAllDataFromDatabaseState
+import com.scrymz.bitebuddy.presentation.states.SearchFoodState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,6 +82,9 @@ class DatabaseOpnerViewModel @Inject constructor(
     private val _getAllDataFromDatabase = MutableStateFlow(GetAllDataFromDatabaseState())
     val getAllDataFromDatabase = _getAllDataFromDatabase.asStateFlow()
 
+    private val _searchFoodState = MutableStateFlow(SearchFoodState())
+    val searchFoodState = _searchFoodState.asStateFlow()
+
     fun copyDatabase() {
         Log.d("VM", "copyDatabase() called")
         viewModelScope.launch(Dispatchers.IO) {
@@ -126,6 +130,28 @@ class DatabaseOpnerViewModel @Inject constructor(
                     is ResultState.Error -> {
                         Log.e("VM", "Fetching data: Error -> ${resultState.error}")
                         _getAllDataFromDatabase.value = GetAllDataFromDatabaseState(error = resultState.error)
+                    }
+                }
+            }
+        }
+    }
+
+    fun searchFood(query: String) {
+        Log.d("VM", "searchFood() called with: $query")
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBaseOpenHelper.searchFoodByName(query).collect { result ->
+                when (result) {
+                    is ResultState.loading -> {
+                        _searchFoodState.value = SearchFoodState(isLoading = true)
+                        Log.d("VM", "Loading search results...")
+                    }
+                    is ResultState.Sucess -> {
+                        _searchFoodState.value = SearchFoodState(data = result.data)
+                        Log.d("VM", "Search successful, found ${result.data.size} results")
+                    }
+                    is ResultState.Error -> {
+                        _searchFoodState.value = SearchFoodState(error = result.error)
+                        Log.e("VM", "Search error: ${result.error}")
                     }
                 }
             }
