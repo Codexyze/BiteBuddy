@@ -1,0 +1,86 @@
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // ✅ STEP 1: Copy database if not exists
+        copyDatabaseIfNeeded()
+
+        // ✅ STEP 2: Fetch ALL foods
+        val allFoods = getAllFoodsFromDB()
+
+        setContent {
+            BiteBuddyTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    FoodListScreen(
+                        foods = allFoods,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+
+    /**
+     * ✅ Copy DB from assets to internal storage (only once)
+     */
+    private fun copyDatabaseIfNeeded() {
+        val dbName = "fooddatabase.db"
+        val dbPath = getDatabasePath(dbName)
+
+        if (!dbPath.exists()) {
+            dbPath.parentFile?.mkdirs()
+            assets.open(dbName).use { inputStream ->
+                FileOutputStream(dbPath).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            Log.d("DB", "✅ Database copied from assets.")
+        } else {
+            Log.d("DB", "✅ Database already exists, skipping copy.")
+        }
+    }
+
+    /**
+     * ✅ Fetches all food names from the database
+     */
+    private fun getAllFoodsFromDB(): List<String> {
+        val resultList = mutableListOf<String>()
+        try {
+            val dbName = "fooddatabase.db"
+            val dbPath = getDatabasePath(dbName).absolutePath
+
+            val db = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READONLY)
+            val cursor = db.rawQuery("SELECT foodname FROM food_table", null)
+
+            if (cursor.moveToFirst()) {
+                do {
+                    resultList.add(cursor.getString(0)) // column index 0 = foodname
+                } while (cursor.moveToNext())
+            }
+
+            cursor.close()
+            db.close()
+        } catch (e: Exception) {
+            Log.e("DB", "❌ Error reading from DB: ${e.message}")
+        }
+        return resultList
+    }
+}
+
+@Composable
+fun FoodListScreen(foods: List<String>, modifier: Modifier = Modifier) {
+    if (foods.isEmpty()) {
+        Text(text = "No food data found!", modifier = modifier)
+    } else {
+        LazyColumn(modifier = modifier) {
+            items(foods) { food ->
+                Text(
+                    text = "🍽 $food",
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+    }
+}
