@@ -39,7 +39,7 @@ fun HomeScreen(navController: NavController) {
             icon = Icons.Outlined.List
         ),
         BottomNaviagtionItem(
-            title = "Later1",
+            title = "Micro",
             icon = Icons.Outlined.LibraryMusic
         ),
         BottomNaviagtionItem(
@@ -106,6 +106,7 @@ fun ContentScreen(navController: NavController,index: Int) {
 
         }
         2->{
+            MicroDetailsScreen(navController = navController)
 
 
         }

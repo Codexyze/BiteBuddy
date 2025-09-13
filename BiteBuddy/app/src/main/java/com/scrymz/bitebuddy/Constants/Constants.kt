@@ -9,4 +9,19 @@ object Constants {
     const val SNACK = "Snack"
     const val MIDNIGHTCRAVINGS = "MidnightCravings"
     const val FOODTABLETRACK= "foodtabletrack"
+
+
+    // Pain Levels
+    const val PAIN_EASY = "Easy"
+    const val PAIN_MILD = "Mild"
+    const val PAIN_NORMAL = "Normal"
+    const val PAIN_MODERATE = "Moderate"
+    const val PAIN_SEVERE = "Severe"
+
+    // Flow Intensity
+    const val FLOW_LIGHT = "Light"
+    const val FLOW_NORMAL = "Normal"
+    const val FLOW_HEAVY = "Heavy"
+
+    const val MENSTRUAL_TABLE = "menstrual_table"
 }
