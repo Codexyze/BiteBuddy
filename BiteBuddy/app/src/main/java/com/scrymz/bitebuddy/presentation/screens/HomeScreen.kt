@@ -98,6 +98,7 @@ fun ContentScreen(navController: NavController,index: Int) {
 
     when(index){
         0->{
+            StatusScreen(navController = navController)
 
         }
         1->{
