@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.scrymz.bitebuddy.core.DataBaseOpenHelper
+import com.scrymz.bitebuddy.data.dao.FoodTableDao
 import com.scrymz.bitebuddy.data.database.FoodDatabase
+import com.scrymz.bitebuddy.data.repoImpl.FoodDatabaseRepositoryImpl
+import com.scrymz.bitebuddy.domain.repository.FoodDatabaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +33,20 @@ object Dimodule {
         ).build()
     }
 
+    @Singleton
+    @Provides
+    fun provideFoodDao(@ApplicationContext context: Context): FoodTableDao{
+         return Room.databaseBuilder(
+            context = context,
+            FoodDatabase::class.java, "food_db"
+        ).build().foodTableDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFoodRepository(dao: FoodTableDao): FoodDatabaseRepository{
+        return FoodDatabaseRepositoryImpl(dao = dao)
+    }
 
 
 
