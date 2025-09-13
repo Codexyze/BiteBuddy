@@ -1,6 +1,6 @@
 package com.scrymz.bitebuddy.presentation.states
 
-import com.scrymz.bitebuddy.data.local.Food
+import com.scrymz.bitebuddy.data.local.model.model.Food
 
 data class CopyDatabaseState(
     val isLoading: Boolean = false,

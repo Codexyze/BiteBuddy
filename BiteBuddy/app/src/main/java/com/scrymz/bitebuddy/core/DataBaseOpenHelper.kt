@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.scrymz.bitebuddy.Constants.Constants
-import com.scrymz.bitebuddy.data.local.Food
+import com.scrymz.bitebuddy.data.local.model.model.Food
 import com.scrymz.bitebuddy.domain.StateHandeling.ResultState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,10 @@
 package com.scrymz.bitebuddy.di.modules
 
 import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.scrymz.bitebuddy.core.DataBaseOpenHelper
+import com.scrymz.bitebuddy.data.database.FoodDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +20,16 @@ object Dimodule {
     fun databaseOpner(@ApplicationContext context: Context): DataBaseOpenHelper{
         return DataBaseOpenHelper(context = context)
     }
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): RoomDatabase{
+        return Room.databaseBuilder(
+          context = context,
+            FoodDatabase::class.java, "food_db"
+        ).build()
+    }
+
 
 
 

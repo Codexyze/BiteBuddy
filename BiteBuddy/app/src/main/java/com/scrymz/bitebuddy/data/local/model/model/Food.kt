@@ -1,5 +1,4 @@
-package com.scrymz.bitebuddy.data.local
-
+package com.scrymz.bitebuddy.data.local.model.model
 
 data class Food(
     val id: Int = 0,                        // INTEGER PRIMARY KEY AUTOINCREMENT
