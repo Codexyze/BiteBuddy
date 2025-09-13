@@ -6,10 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.FOODINFOSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.HOMESCREEN
 import com.scrymz.bitebuddy.presentation.screens.FoodInfoScreen
 import com.scrymz.bitebuddy.presentation.screens.HomeScreen
+import com.scrymz.bitebuddy.presentation.screens.InterstitialAdScreen
 
 @Composable
 fun BiteBuddy(modifier: Modifier = Modifier) {
@@ -40,6 +42,10 @@ fun BiteBuddy(modifier: Modifier = Modifier) {
                 maleImportant =data.maleImportant
             )
 
+        }
+
+        composable<ADSSCREEN> {
+            InterstitialAdScreen()
         }
     }
     

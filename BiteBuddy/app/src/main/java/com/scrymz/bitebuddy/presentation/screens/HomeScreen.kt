@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.PlaylistAddCheck
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.LibraryMusic
 import androidx.compose.material.icons.outlined.List
@@ -43,7 +42,7 @@ fun HomeScreen(navController: NavController) {
             icon = Icons.Outlined.LibraryMusic
         ),
         BottomNaviagtionItem(
-            title = "Leter2",
+            title = "Periods",
             icon = Icons.Outlined.PlaylistAddCheck
         ),
         BottomNaviagtionItem(
@@ -116,6 +115,7 @@ fun ContentScreen(navController: NavController,index: Int) {
 
         }
         4->{
+            SettingsScreen(navController = navController)
 
         }
 

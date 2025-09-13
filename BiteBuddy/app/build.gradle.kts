@@ -7,12 +7,24 @@ plugins {
     id ("kotlin-kapt")
 
 }
+//
+//val admobAppId: String = project.findProperty("ADMOB_APP_ID") as? String ?: ""
+//val interstitialAdId: String = project.findProperty("INTERSTITIAL_AD_ID") as? String ?: ""
+val admobAppId: String = project.findProperty("ADMOB_APP_ID") as? String
+    ?: throw GradleException("ADMOB_APP_ID not set in gradle.properties!")
+
+val interstitialAdId: String = project.findProperty("INTERSTITIAL_AD_ID") as? String
+    ?: throw GradleException("INTERSTITIAL_AD_ID not set in gradle.properties!")
 
 android {
     namespace = "com.scrymz.bitebuddy"
     compileSdk = 36
 
     defaultConfig {
+        manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
+        buildConfigField("String", "ADMOB_APP_ID", "\"$admobAppId\"")
+        buildConfigField("String", "INTERSTITIAL_AD_ID", "\"$interstitialAdId\"")
+
         applicationId = "com.scrymz.bitebuddy"
         minSdk = 26
         targetSdk = 36
@@ -40,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -63,7 +76,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     //
-    val room_version = "2.6.1"
+    val room_version = "2.8.0"
 
     implementation("androidx.room:room-runtime:$room_version")
 
@@ -75,10 +88,15 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //ExteND LIB
-    implementation("androidx.compose.material:material-icons-extended:1.6.1")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     //Nav
     val nav_version = "2.8.3"
     implementation("androidx.navigation:navigation-compose:${nav_version}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+
+    //ads
+    implementation("com.google.android.gms:play-services-ads:24.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
+
 }
