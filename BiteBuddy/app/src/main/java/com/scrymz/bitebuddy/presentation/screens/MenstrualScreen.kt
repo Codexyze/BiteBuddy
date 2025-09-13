@@ -411,7 +411,6 @@ fun DropdownSelector(
             },
             modifier = Modifier.fillMaxWidth()
         )
-
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(

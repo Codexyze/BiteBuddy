@@ -25,3 +25,6 @@ data class FOODINFOSCREEN(
     val femaleImportant: Boolean = false,   // INTEGER (female_important)
     val maleImportant: Boolean = false      // INTEGER (male_important)
 )
+
+@Serializable
+object ADSSCREEN
