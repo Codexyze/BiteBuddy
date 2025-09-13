@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.scrymz.bitebuddy.data.local.Food
+import com.scrymz.bitebuddy.data.local.model.model.Food
 import com.scrymz.bitebuddy.presentation.navigation.routes.FOODINFOSCREEN
 import com.scrymz.bitebuddy.presentation.viewmodels.DatabaseOpnerViewModel
 
