@@ -101,7 +101,7 @@ fun ContentScreen(navController: NavController,index: Int) {
 
         }
         1->{
-            ListOfAllFood()
+            ListOfAllFood(navController = navController)
 
         }
         2->{
