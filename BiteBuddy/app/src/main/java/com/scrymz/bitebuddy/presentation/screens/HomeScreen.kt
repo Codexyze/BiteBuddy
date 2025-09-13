@@ -111,6 +111,8 @@ fun ContentScreen(navController: NavController,index: Int) {
 
         }
         3->{
+            MenstrualScreen()
+
 
         }
         4->{
