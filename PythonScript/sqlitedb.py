@@ -120,5 +120,5 @@ def import_from_csv(csv_file_path):
 
 if __name__ == "__main__":
     # Replace with your uploaded file path
-    csv_path = csv_path = r"C:\Users\aksha\Downloads\food_dataset_2000.csv"
+    csv_path = csv_path = r"C:\Users\aksha\Downloads\food_dataset_8500.csv"
     import_from_csv(csv_path)
