@@ -24,4 +24,7 @@ object Constants {
     const val FLOW_HEAVY = "Heavy"
 
     const val MENSTRUAL_TABLE = "menstrual_table"
+
+    //protection key for sqlcipher
+    const val SQLCIPER_KEY = "SQL_CIPER_ENCRPYTION_KEY"
 }

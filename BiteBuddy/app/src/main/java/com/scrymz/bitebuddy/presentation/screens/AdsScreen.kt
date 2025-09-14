@@ -89,7 +89,7 @@ fun InterstitialAdScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            "Safe Interstitial Ad Screen",
+            "Feedback by watching Ads",
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center
         )
@@ -118,7 +118,7 @@ fun InterstitialAdScreen() {
                     },
                     enabled = interstitialAd != null
                 ) {
-                    Text("Show Interstitial Ad")
+                    Text("Feedback Ad")
                 }
             }
         }

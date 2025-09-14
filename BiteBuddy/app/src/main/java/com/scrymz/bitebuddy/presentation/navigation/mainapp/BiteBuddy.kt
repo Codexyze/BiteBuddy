@@ -9,9 +9,11 @@ import androidx.navigation.toRoute
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.FOODINFOSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.HOMESCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
 import com.scrymz.bitebuddy.presentation.screens.FoodInfoScreen
 import com.scrymz.bitebuddy.presentation.screens.HomeScreen
 import com.scrymz.bitebuddy.presentation.screens.InterstitialAdScreen
+import com.scrymz.bitebuddy.presentation.screens.PrivacyPolicyScreen
 
 @Composable
 fun BiteBuddy(modifier: Modifier = Modifier) {
@@ -46,6 +48,10 @@ fun BiteBuddy(modifier: Modifier = Modifier) {
 
         composable<ADSSCREEN> {
             InterstitialAdScreen()
+        }
+
+        composable<PRIVACYPOLICYSCREEN> {
+            PrivacyPolicyScreen(navController = navController)
         }
     }
     

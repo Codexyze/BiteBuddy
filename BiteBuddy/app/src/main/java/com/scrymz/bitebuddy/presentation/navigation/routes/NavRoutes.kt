@@ -28,3 +28,6 @@ data class FOODINFOSCREEN(
 
 @Serializable
 object ADSSCREEN
+
+@Serializable
+object  PRIVACYPOLICYSCREEN
