@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -36,7 +37,10 @@ fun SettingsScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* Privacy Policy */ },
+            onClick = {
+
+            navController.navigate(PRIVACYPOLICYSCREEN)
+            },
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .height(60.dp)

@@ -7,8 +7,6 @@ import com.scrymz.bitebuddy.core.DataBaseOpenHelper
 import com.scrymz.bitebuddy.data.dao.FoodTableDao
 import com.scrymz.bitebuddy.data.dao.MenstrualDao
 import com.scrymz.bitebuddy.data.database.FoodDatabase
-import com.scrymz.bitebuddy.data.repoImpl.FoodDatabaseRepositoryImpl
-import com.scrymz.bitebuddy.domain.repository.FoodDatabaseRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
