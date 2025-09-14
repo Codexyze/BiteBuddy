@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
 
@@ -23,19 +24,25 @@ fun SettingsScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = {
-            // TODO: Navigate or perform Ads action
-            navController.navigate(ADSSCREEN)
-        }, modifier = Modifier.fillMaxWidth(0.85f)) {
-            Text("Ads")
+        Button(
+            onClick = { navController.navigate(ADSSCREEN) },
+            modifier = Modifier
+                .fillMaxWidth(0.9f)      // slightly bigger width
+                .height(60.dp)           // increase height
+        ) {
+            Text("Ads", fontSize = 18.sp) // optional: make text bigger
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            // TODO: Navigate or perform Privacy Policy action
-        }) {
-            Text("Privacy Policy")
+        Button(
+            onClick = { /* Privacy Policy */ },
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(60.dp)
+        ) {
+            Text("Privacy Policy", fontSize = 18.sp)
         }
+
     }
 }
