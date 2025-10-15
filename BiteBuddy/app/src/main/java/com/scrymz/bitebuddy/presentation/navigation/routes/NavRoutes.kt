@@ -1,7 +1,8 @@
 package com.scrymz.bitebuddy.presentation.navigation.routes
 
+import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
-
+@Keep
 @Serializable
 object HOMESCREEN
 
@@ -31,3 +32,10 @@ object ADSSCREEN
 
 @Serializable
 object  PRIVACYPOLICYSCREEN
+
+@Serializable
+object EXERCISESCREEN
+
+@Serializable
+object WATERINTAKESCREEN
+

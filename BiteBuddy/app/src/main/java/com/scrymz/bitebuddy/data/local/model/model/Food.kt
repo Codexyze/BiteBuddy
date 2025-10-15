@@ -1,5 +1,8 @@
 package com.scrymz.bitebuddy.data.local.model.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class Food(
     val id: Int = 0,                        // INTEGER PRIMARY KEY AUTOINCREMENT
     val type: String? = null,               // TEXT (nullable)

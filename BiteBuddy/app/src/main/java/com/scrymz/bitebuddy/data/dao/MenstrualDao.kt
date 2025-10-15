@@ -1,5 +1,6 @@
 package com.scrymz.bitebuddy.data.dao
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,7 +10,7 @@ import com.scrymz.bitebuddy.Constants.Constants
 import com.scrymz.bitebuddy.data.entity.MenstrualPeriod
 import kotlinx.coroutines.flow.Flow
 
-
+@Keep
 @Dao
 interface MenstrualDao {
     @Insert
