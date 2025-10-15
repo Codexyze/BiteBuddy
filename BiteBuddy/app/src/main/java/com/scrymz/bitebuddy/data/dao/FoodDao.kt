@@ -1,10 +1,11 @@
 package com.scrymz.bitebuddy.data.dao
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Query
 import com.scrymz.bitebuddy.data.local.model.model.Food
 import kotlinx.coroutines.flow.Flow
-
+@Keep
 @Dao
 interface FoodDao {
     @Query("SELECT * FROM food_table")

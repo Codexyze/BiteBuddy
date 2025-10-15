@@ -1,10 +1,11 @@
 package com.scrymz.bitebuddy.data.entity
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.scrymz.bitebuddy.Constants.Constants
 
-
+@Keep
 @Entity(tableName = Constants.MENSTRUAL_TABLE)
 data class MenstrualPeriod(
     @PrimaryKey(autoGenerate = true)

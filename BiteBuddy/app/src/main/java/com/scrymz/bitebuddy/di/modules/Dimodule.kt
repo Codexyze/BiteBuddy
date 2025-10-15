@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.scrymz.bitebuddy.core.DataBaseOpenHelper
+import com.scrymz.bitebuddy.data.dao.ExerciseDao
 import com.scrymz.bitebuddy.data.dao.FoodTableDao
 import com.scrymz.bitebuddy.data.dao.MenstrualDao
+import com.scrymz.bitebuddy.data.dao.WaterIntakeDao
 import com.scrymz.bitebuddy.data.database.FoodDatabase
 import dagger.Module
 import dagger.Provides
@@ -52,6 +54,23 @@ object Dimodule {
         ).build().menstrualPeriodDao()
     }
 
+    @Singleton
+    @Provides
+    fun provideWaterIntakeDatabase(@ApplicationContext context: Context): WaterIntakeDao {
+        return Room.databaseBuilder(
+            context = context,
+            FoodDatabase::class.java, "food_db"
+        ).build().waterInkateDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideExerciseDatabase(@ApplicationContext context: Context): ExerciseDao {
+        return Room.databaseBuilder(
+            context = context,
+            FoodDatabase::class.java, "food_db"
+        ).build().exerciseDao()
+    }
 
 
 

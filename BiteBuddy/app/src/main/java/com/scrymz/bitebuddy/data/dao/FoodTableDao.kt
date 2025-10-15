@@ -1,5 +1,6 @@
 package com.scrymz.bitebuddy.data.dao
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -10,7 +11,7 @@ import com.scrymz.bitebuddy.data.entity.FoodTable
 import com.scrymz.bitebuddy.data.entity.ProteinDay
 import kotlinx.coroutines.flow.Flow
 
-
+@Keep
 @Dao
 interface FoodTableDao {
 

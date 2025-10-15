@@ -5,11 +5,13 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.LibraryMusic
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.PlaylistAddCheck
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -28,6 +30,31 @@ import androidx.navigation.NavController
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedindex by rememberSaveable { mutableStateOf(0) }
+//    val bottonNavList = listOf<BottomNaviagtionItem>(
+//        BottomNaviagtionItem(
+//            title = "Status",
+//            icon = Icons.Outlined.GraphicEq
+//        ),
+//        BottomNaviagtionItem(
+//            title = "Food",
+//            icon = Icons.Outlined.List
+//        ),
+//        BottomNaviagtionItem(
+//            title = "Micro",
+//            icon = Icons.Outlined.LibraryMusic
+//        ),
+//        BottomNaviagtionItem(
+//            title = "Periods",
+//            icon = Icons.Outlined.PlaylistAddCheck
+//        ),
+//        BottomNaviagtionItem(
+//            title = "Settings",
+//            icon = Icons.Outlined.Settings
+//        )
+//
+//
+//    )
+
     val bottonNavList = listOf<BottomNaviagtionItem>(
         BottomNaviagtionItem(
             title = "Status",
@@ -46,12 +73,19 @@ fun HomeScreen(navController: NavController) {
             icon = Icons.Outlined.PlaylistAddCheck
         ),
         BottomNaviagtionItem(
+            title = "Exercise",
+            icon = Icons.Outlined.FitnessCenter  // ADD THIS IMPORT: androidx.compose.material.icons.outlined.FitnessCenter
+        ),
+        BottomNaviagtionItem(
+            title = "Water",
+            icon = Icons.Outlined.WaterDrop  // ADD THIS IMPORT: androidx.compose.material.icons.outlined.WaterDrop
+        ),
+        BottomNaviagtionItem(
             title = "Settings",
             icon = Icons.Outlined.Settings
         )
-
-
     )
+
 
     Scaffold(
         bottomBar = {
@@ -112,11 +146,15 @@ fun ContentScreen(navController: NavController,index: Int) {
         3->{
             MenstrualScreen()
 
+        }
+        4->{ExerciseScreen()
 
         }
-        4->{
+        5 -> {
+            WaterIntakeScreen()  // NEW
+        }
+        6 -> {
             SettingsScreen(navController = navController)
-
         }
 
     }
