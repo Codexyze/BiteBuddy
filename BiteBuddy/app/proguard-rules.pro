@@ -21,36 +21,36 @@
 #-renamesourcefileattribute SourceFile
 
 # Keep Kotlinx Serialization metadata and serializers
-
--keepclassmembers class ** {
-    @kotlinx.serialization.Serializable *;
-}
--keep class kotlinx.serialization.** { *; }
--keepclassmembers class **$Companion {
-    kotlinx.serialization.KSerializer serializer(...);
-}
--keepattributes *Annotation*
-
-# Keep all navigation route classes (they use @Serializable for type-safe navigation)
--keep @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** { *; }
--keepclassmembers @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** {
-    <fields>;
-    <init>(...);
-}
-
-# Keep serializers for navigation routes
--keep class com.scrymz.bitebuddy.presentation.navigation.routes.**$$serializer { *; }
-
-# Additional serialization support
--keepattributes InnerClasses
--dontnote kotlinx.serialization.AnnotationsKt
--keepclassmembers class kotlinx.serialization.json.** {
-    *** Companion;
-}
--keepclasseswithmembers class kotlinx.serialization.json.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
-# Keep names of serialized classes
--keepnames @kotlinx.serialization.Serializable class **
+#
+#-keepclassmembers class ** {
+#    @kotlinx.serialization.Serializable *;
+#}
+#-keep class kotlinx.serialization.** { *; }
+#-keepclassmembers class **$Companion {
+#    kotlinx.serialization.KSerializer serializer(...);
+#}
+#-keepattributes *Annotation*
+#
+## Keep all navigation route classes (they use @Serializable for type-safe navigation)
+#-keep @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** { *; }
+#-keepclassmembers @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** {
+#    <fields>;
+#    <init>(...);
+#}
+#
+## Keep serializers for navigation routes
+#-keep class com.scrymz.bitebuddy.presentation.navigation.routes.**$$serializer { *; }
+#
+## Additional serialization support
+#-keepattributes InnerClasses
+#-dontnote kotlinx.serialization.AnnotationsKt
+#-keepclassmembers class kotlinx.serialization.json.** {
+#    *** Companion;
+#}
+#-keepclasseswithmembers class kotlinx.serialization.json.** {
+#    kotlinx.serialization.KSerializer serializer(...);
+#}
+#
+## Keep names of serialized classes
+#-keepnames @kotlinx.serialization.Serializable class **
 
