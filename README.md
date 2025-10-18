@@ -6,7 +6,9 @@ A comprehensive fitness and nutrition tracking application designed to help you 
 
 ## Features
 
-<img src="https://github.com/user-attachments/assets/80e45109-68e7-4d3a-a04f-ec39755acc4e" alt="Meme App Features" width="100%"/>
+<img src="https://github.com/user-attachments/assets/4ca0906d-300d-4d4f-bc4f-38f19ebfa09c" alt="Meme App Features" width="100%"/>
+
+
 
 ---
 
