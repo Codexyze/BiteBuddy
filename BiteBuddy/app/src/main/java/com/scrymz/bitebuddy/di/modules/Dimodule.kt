@@ -29,9 +29,9 @@ object Dimodule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): RoomDatabase{
         return Room.databaseBuilder(
-          context = context,
-            FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration().build()
+              context = context,
+                FoodDatabase::class.java, "food_db"
+            ).fallbackToDestructiveMigration(true).build()
     }
 
     @Singleton
@@ -40,7 +40,7 @@ object Dimodule {
          return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).build().foodTableDao()
+        ).fallbackToDestructiveMigration(true).build().foodTableDao()
     }
 
 
@@ -51,7 +51,7 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).build().menstrualPeriodDao()
+        ).fallbackToDestructiveMigration(true).build().menstrualPeriodDao()
     }
 
     @Singleton
@@ -60,7 +60,7 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).build().waterInkateDao()
+        ).fallbackToDestructiveMigration(true).build().waterInkateDao()
     }
 
     @Singleton
@@ -69,7 +69,7 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).build().exerciseDao()
+        ).fallbackToDestructiveMigration(true).build().exerciseDao()
     }
 
 

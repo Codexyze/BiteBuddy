@@ -98,7 +98,7 @@ fun ListOfAllFood(
                 copyDatabaseState.error.isNotEmpty() -> {
                     Text(
                         text = copyDatabaseState.error,
-                        color = Color.Red,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -107,7 +107,7 @@ fun ListOfAllFood(
                 allFoodState.error.isNotEmpty() -> {
                     Text(
                         text = allFoodState.error,
-                        color = Color.Red,
+                        color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.Center)
                     )

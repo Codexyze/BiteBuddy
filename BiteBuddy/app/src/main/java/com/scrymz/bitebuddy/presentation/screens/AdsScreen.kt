@@ -103,7 +103,7 @@ fun InterstitialAdScreen() {
                 Text("Loading ad...")
             }
             loadFailed -> {
-                Text("Ad failed to load", color = Color.Red)
+                Text("Ad failed to load", color = MaterialTheme.colorScheme.error)
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(onClick = { loadAd() }) {
                     Text("Retry")

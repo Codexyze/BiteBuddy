@@ -301,9 +301,18 @@ fun ErrorView(message: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(Icons.Default.Error, contentDescription = null, tint = Color.Red, modifier = Modifier.size(40.dp))
+        Icon(
+            Icons.Default.Error,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.error,
+            modifier = Modifier.size(40.dp)
+        )
         Spacer(Modifier.height(8.dp))
-        Text(text = message, color = Color.Red, fontWeight = FontWeight.SemiBold)
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.error,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
 
@@ -316,9 +325,17 @@ fun EmptyView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(Icons.Default.Info, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(40.dp))
+        Icon(
+            Icons.Default.Info,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.size(40.dp)
+        )
         Spacer(Modifier.height(8.dp))
-        Text(text = "No food data available", color = Color.Gray)
+        Text(
+            text = "No food data available",
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
@@ -444,13 +461,13 @@ fun FoodItemCard(
                             CircularProgressIndicator(
                                 modifier = Modifier.size(16.dp),
                                 strokeWidth = 2.dp,
-                                color = Color.Red
+                                color = MaterialTheme.colorScheme.error
                             )
                         } else {
                             Icon(
                                 Icons.Default.Delete,
                                 contentDescription = "Delete",
-                                tint = Color.Red,
+                                tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -473,7 +490,7 @@ fun FoodItemCard(
                         showDeleteDialog = false
                     }
                 ) {
-                    Text("Delete", color = Color.Red)
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
@@ -624,4 +641,3 @@ private fun refreshData(viewModel: FoodViewModel, selectedDate: String, selected
         viewModel.getByConsumedTime(selectedTime)
     }
 }
-

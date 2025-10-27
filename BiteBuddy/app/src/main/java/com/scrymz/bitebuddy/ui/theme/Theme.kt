@@ -12,51 +12,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-//private val DarkColorScheme = darkColorScheme(
-//    primary = Purple80,
-//    secondary = PurpleGrey80,
-//    tertiary = Pink80
-//)
-//
-//private val LightColorScheme = lightColorScheme(
-//    primary = Purple40,
-//    secondary = PurpleGrey40,
-//    tertiary = Pink40
-//
-//    /* Other default colors to override
-//    background = Color(0xFFFFFBFE),
-//    surface = Color(0xFFFFFBFE),
-//    onPrimary = Color.White,
-//    onSecondary = Color.White,
-//    onTertiary = Color.White,
-//    onBackground = Color(0xFF1C1B1F),
-//    onSurface = Color(0xFF1C1B1F),
-//    */
-//)
+// 🌙 Dark Mode Color Scheme - Elegant & Sophisticated
 private val DarkColorScheme = darkColorScheme(
-    primary = GreenDark,
-    secondary = GreenSecondaryDark,
-    tertiary = OrangeAccentDark,
-    background = DarkSurface,
+    primary = TealDark,
+    secondary = TealSecondaryDark,
+    tertiary = CoralDark,
+    background = DarkBackground,
     surface = DarkSurface,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.Black,
-    onBackground = Color.White,
-    onSurface = Color.White
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = GreenPrimary,
-    secondary = GreenSecondary,
-    tertiary = OrangeAccent,
-    background = CreamBackground,
-    surface = LightSurface,
+    surfaceVariant = DarkSurfaceVariant,
     onPrimary = Color.White,
     onSecondary = Color.Black,
+    onTertiary = Color.Black,
+    onBackground = TextPrimaryDark,
+    onSurface = TextPrimaryDark,
+    onSurfaceVariant = TextSecondaryDark,
+    error = ErrorRed,
+    onError = Color.White,
+    primaryContainer = Color(0xFF004D40),
+    secondaryContainer = Color(0xFF00695C),
+    outline = Color(0xFF424242),
+    outlineVariant = Color(0xFF616161)
+)
+
+// ☀️ Light Mode Color Scheme - Fresh & Vibrant
+private val LightColorScheme = lightColorScheme(
+    primary = TealPrimary,
+    secondary = TealSecondary,
+    tertiary = CoralAccent,
+    background = LightBackground,
+    surface = LightSurface,
+    surfaceVariant = LightSurfaceVariant,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F)
+    onBackground = TextPrimaryLight,
+    onSurface = TextPrimaryLight,
+    onSurfaceVariant = TextSecondaryLight,
+    error = ErrorRed,
+    onError = Color.White,
+    primaryContainer = Color(0xFFB2DFDB),
+    secondaryContainer = Color(0xFFE0F2F1),
+    outline = Color(0xFFBDBDBD),
+    outlineVariant = Color(0xFFE0E0E0)
 )
 
 @Composable
