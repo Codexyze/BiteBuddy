@@ -188,10 +188,10 @@ fun NutrientCard(nutrient: NutrientInfo) {
     val isExcess = nutrient.consumed > (nutrient.dailyValue * 1.5)
 
     val statusColor = when {
-        isExcess -> Color.Red
-        isDeficient -> Color.Blue
-        isOptimal -> Color.Green
-        else -> MaterialTheme.colorScheme.primary
+        isExcess -> MaterialTheme.colorScheme.error
+        isDeficient -> MaterialTheme.colorScheme.tertiary
+        isOptimal -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.secondary
     }
 
     Card(
@@ -312,11 +312,11 @@ fun StatusBadge(
     isOptimal: Boolean,
     isExcess: Boolean
 ) {
-    val (text, color, backgroundColor) = when {
-        isExcess -> Triple("EXCESSIVE", Color.White, Color.Red)
-        isDeficient -> Triple("DEFICIENT", Color.Black, Color.Blue)
-        isOptimal -> Triple("OPTIMAL", Color.White, Color.Green)
-        else -> Triple("MODERATE", Color.Black, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+    val (text, textColor, backgroundColor) = when {
+        isExcess -> Triple("EXCESSIVE", MaterialTheme.colorScheme.onError, MaterialTheme.colorScheme.error)
+        isDeficient -> Triple("DEFICIENT", MaterialTheme.colorScheme.onTertiary, MaterialTheme.colorScheme.tertiary)
+        isOptimal -> Triple("OPTIMAL", MaterialTheme.colorScheme.onPrimary, MaterialTheme.colorScheme.primary)
+        else -> Triple("MODERATE", MaterialTheme.colorScheme.onSecondaryContainer, MaterialTheme.colorScheme.secondaryContainer)
     }
 
     Box(
@@ -328,7 +328,7 @@ fun StatusBadge(
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-            color = color,
+            color = textColor,
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .padding(horizontal = 8.dp, vertical = 2.dp)
@@ -345,7 +345,7 @@ fun InfoSection(
     Text(
         text = title,
         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-        color = color
+        color = MaterialTheme.colorScheme.primary
     )
     items.take(3).forEach { item ->
         Text(

@@ -17,7 +17,7 @@ import com.scrymz.bitebuddy.data.entity.WaterIntake
     WaterIntake::class,
     Exercise::class
 
-                     ], version =4 , exportSchema = false)
+                     ], version =5 , exportSchema = false)
 abstract class FoodDatabase : RoomDatabase(){
     abstract fun foodTableDao(): FoodTableDao
     abstract fun menstrualPeriodDao(): MenstrualDao
