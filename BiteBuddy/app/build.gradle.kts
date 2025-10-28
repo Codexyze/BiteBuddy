@@ -16,6 +16,9 @@ val admobAppId: String = project.findProperty("ADMOB_APP_ID") as? String
 val interstitialAdId: String = project.findProperty("INTERSTITIAL_AD_ID") as? String
     ?: throw GradleException("INTERSTITIAL_AD_ID not set in gradle.properties!")
 
+val banner_AdsId: String = project.findProperty("BANNER_AD_ID") as? String
+    ?: throw GradleException("BANNER_ADS_ID not set in gradle.properties!")
+
 android {
     namespace = "com.scrymz.bitebuddy"
     compileSdk = 36

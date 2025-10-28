@@ -137,25 +137,20 @@ fun StatusScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Your Food Dashboard", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { padding ->
+    Box {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .padding(16.dp)
         ) {
+            // Title
+            Text(
+                text = "Your Food Dashboard",
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+            )
+
+            Spacer(Modifier.height(16.dp))
+
             // DATE FILTER
             OutlinedTextField(
                 value = selectedDate,
@@ -209,6 +204,11 @@ fun StatusScreen(
                 isDeleting = deleteFoodState.isLoading,
                 isUpdating = upsertFoodState.isLoading
             )
+        }
+
+        // Snackbar host at the bottom
+        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+            SnackbarHost(snackbarHostState)
         }
     }
 }

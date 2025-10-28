@@ -107,22 +107,20 @@ fun MenstrualScreen(
         viewModel.getAllPeriodsDescending()
     }
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                editingPeriod = null
-                showDialog = true
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        }
-    ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(16.dp)
         ) {
+            // Title
+            Text(
+                text = "Period Tracker",
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+            )
+
+            Spacer(Modifier.height(16.dp))
+
             // Filters
             FilterRow(
                 onFilterByMonth = { month, year -> viewModel.getPeriodsByMonth(month, year) },
@@ -160,6 +158,19 @@ fun MenstrualScreen(
                     }
                 }
             }
+        }
+
+        // Floating Action Button
+        FloatingActionButton(
+            onClick = {
+                editingPeriod = null
+                showDialog = true
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Add Period")
         }
     }
 
