@@ -74,41 +74,48 @@ fun MicroDetailsScreen(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
-        // Title
-        Text(
-            text = "Micronutrient Analysis",
-            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-        )
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+        ) {
+            // Title
+            Text(
+                text = "Micronutrient Analysis",
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Date Selection
-        DateSelectionCard(
-            selectedDate = selectedDate,
-            onDateChange = { selectedDate = it }
-        )
+            // Date Selection
+            DateSelectionCard(
+                selectedDate = selectedDate,
+                onDateChange = { selectedDate = it }
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        when {
-            getByDateState.isLoading -> {
-                LoadingView()
-            }
-            getByDateState.error.isNotEmpty() -> {
-                ErrorView(getByDateState.error)
-            }
-            getByDateState.data.isEmpty() -> {
-                EmptyDataView()
-            }
-            else -> {
-                val nutrients = calculateNutrients(getByDateState.data)
-                NutrientAnalysisContent(nutrients)
+            when {
+                getByDateState.isLoading -> {
+                    LoadingView()
+                }
+                getByDateState.error.isNotEmpty() -> {
+                    ErrorView(getByDateState.error)
+                }
+                getByDateState.data.isEmpty() -> {
+                    EmptyDataView()
+                }
+                else -> {
+                    val nutrients = calculateNutrients(getByDateState.data)
+                    NutrientAnalysisContent(nutrients)
+                }
             }
         }
+
+        // Banner Ad at bottom
+        BannerAds()
     }
 }
 

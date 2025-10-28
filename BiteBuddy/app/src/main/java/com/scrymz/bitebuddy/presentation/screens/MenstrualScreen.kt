@@ -109,55 +109,62 @@ fun MenstrualScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Title
-            Text(
-                text = "Period Tracker",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            ) {
+                // Title
+                Text(
+                    text = "Period Tracker",
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                )
 
-            Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(16.dp))
 
-            // Filters
-            FilterRow(
-                onFilterByMonth = { month, year -> viewModel.getPeriodsByMonth(month, year) },
-                onFilterByPain = { viewModel.getPeriodsByPainLevel(it) },
-                onFilterByTimeOfDay = { viewModel.getPeriodsByTimeOfDay(it) },
-                onResetFilters = { viewModel.getAllPeriodsDescending() }
-            )
+                // Filters
+                FilterRow(
+                    onFilterByMonth = { month, year -> viewModel.getPeriodsByMonth(month, year) },
+                    onFilterByPain = { viewModel.getPeriodsByPainLevel(it) },
+                    onFilterByTimeOfDay = { viewModel.getPeriodsByTimeOfDay(it) },
+                    onResetFilters = { viewModel.getAllPeriodsDescending() }
+                )
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            when {
-                allPeriodsState.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                }
-                allPeriodsState.error.isNotEmpty() -> {
-                    ErrorView(message = allPeriodsState.error) {
-                        viewModel.getAllPeriodsDescending()
+                when {
+                    allPeriodsState.isLoading -> {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     }
-                }
-                allPeriodsState.data.isEmpty() -> {
-                    EmptyView(message = "No periods recorded yet.")
-                }
-                else -> {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(allPeriodsState.data) { period ->
-                            PeriodItem(
-                                period = period,
-                                onEdit = {
-                                    editingPeriod = period
-                                    showDialog = true
-                                },
-                                onDelete = { viewModel.deletePeriod(period) }
-                            )
+                    allPeriodsState.error.isNotEmpty() -> {
+                        ErrorView(message = allPeriodsState.error) {
+                            viewModel.getAllPeriodsDescending()
+                        }
+                    }
+                    allPeriodsState.data.isEmpty() -> {
+                        EmptyView(message = "No periods recorded yet.")
+                    }
+                    else -> {
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(allPeriodsState.data) { period ->
+                                PeriodItem(
+                                    period = period,
+                                    onEdit = {
+                                        editingPeriod = period
+                                        showDialog = true
+                                    },
+                                    onDelete = { viewModel.deletePeriod(period) }
+                                )
+                            }
                         }
                     }
                 }
             }
+
+            // Banner Ad at bottom
+            BannerAds()
         }
 
         // Floating Action Button
@@ -169,6 +176,7 @@ fun MenstrualScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
+                .padding(bottom = 60.dp)
         ) {
             Icon(Icons.Default.Add, contentDescription = "Add Period")
         }

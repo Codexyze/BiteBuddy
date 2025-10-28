@@ -63,122 +63,129 @@ fun PrivacyPolicyScreen(navController: NavController) {
             )
         }
     ) { padding ->
-        padding
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
+            modifier = Modifier.fillMaxSize()
         ) {
-
-            // 📜 Main Privacy Content
-            Text(
-                text = "Welcome to BiteBuddy!\n\nYour privacy matters to us. " +
-                        "This Privacy Policy explains how we handle your data when you use our app.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "1️⃣ Internet Usage",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = "BiteBuddy only uses the internet to load ads. " +
-                        "No personal data is collected, stored, or shared with third parties for tracking purposes.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "2️⃣ Advertisements",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = "Ads are shown only when you choose to view them by clicking the 'Feedback Ad' button. " +
-                        "We never force ads, pop-ups, or auto-play ads. Your experience remains distraction-free.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "3️⃣ Food Data Accuracy",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = "Our food dataset is meant for general health tracking purposes. " +
-                        "While we try to keep the data accurate, it may not be medically precise. " +
-                        "Always consult a healthcare professional for dietary advice.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // 📝 User-Friendly Summary Note
-            Card(
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                elevation = CardDefaults.cardElevation(4.dp),
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(padding)
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Summary (Simple Language)",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.tertiary
+
+                // 📜 Main Privacy Content
+                Text(
+                    text = "Welcome to BiteBuddy!\n\nYour privacy matters to us. " +
+                            "This Privacy Policy explains how we handle your data when you use our app.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "1️⃣ Internet Usage",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "BiteBuddy only uses the internet to load ads. " +
+                            "No personal data is collected, stored, or shared with third parties for tracking purposes.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "2️⃣ Advertisements",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "Ads are shown only when you choose to view them by clicking the 'Feedback Ad' button. " +
+                            "We never force ads, pop-ups, or auto-play ads. Your experience remains distraction-free.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "3️⃣ Food Data Accuracy",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = "Our food dataset is meant for general health tracking purposes. " +
+                            "While we try to keep the data accurate, it may not be medically precise. " +
+                            "Always consult a healthcare professional for dietary advice.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // 📝 User-Friendly Summary Note
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    elevation = CardDefaults.cardElevation(4.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Summary (Simple Language)",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = "We don’t collect personal data. We only show ads when you choose to click the 'Feedback Ad' button. " +
+                                    "The food info is for general tracking, not for medical decisions.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // 🌐 Open Full Policy Online Button
+                TextButton(
+                    onClick = {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://codexyze.github.io/bitebuddy.html")
+                        )
+                        context.startActivity(intent)
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.OpenInNew,
+                        contentDescription = "Open Website",
+                        tint = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "We don’t collect personal data. We only show ads when you choose to click the 'Feedback Ad' button. " +
-                                "The food info is for general tracking, not for medical decisions.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text("View Full Policy Online", color = MaterialTheme.colorScheme.primary)
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // ✅ Back Button
+                Button(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Go Back")
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 🌐 Open Full Policy Online Button
-            TextButton(
-                onClick = {
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://codexyze.github.io/bitebuddy.html")
-                    )
-                    context.startActivity(intent)
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.OpenInNew,
-                    contentDescription = "Open Website",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text("View Full Policy Online", color = MaterialTheme.colorScheme.primary)
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // ✅ Back Button
-            Button(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("Go Back")
-            }
+            // Banner Ad at bottom
+            BannerAds()
         }
     }
 }

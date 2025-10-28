@@ -27,6 +27,7 @@ android {
         manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
         buildConfigField("String", "ADMOB_APP_ID", "\"$admobAppId\"")
         buildConfigField("String", "INTERSTITIAL_AD_ID", "\"$interstitialAdId\"")
+        buildConfigField("String", "BANNER_AD_ID", "\"$banner_AdsId\"")
 
         applicationId = "com.scrymz.bitebuddy"
         minSdk = 26
