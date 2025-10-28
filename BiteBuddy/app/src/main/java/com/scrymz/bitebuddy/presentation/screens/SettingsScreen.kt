@@ -36,66 +36,73 @@ fun SettingsScreen(navController: NavController) {
         WaterIntakeScreen()
     } else {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize()
         ) {
-            Button(
-                onClick = { showExerciseScreen = true },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(60.dp)
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.FitnessCenter,
-                    contentDescription = "Exercise",
-                    modifier = Modifier.height(24.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Exercise Tracker", fontSize = 18.sp)
+                Button(
+                    onClick = { showExerciseScreen = true },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.FitnessCenter,
+                        contentDescription = "Exercise",
+                        modifier = Modifier.height(24.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Exercise Tracker", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { showWaterIntakeScreen = true },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.WaterDrop,
+                        contentDescription = "Water",
+                        modifier = Modifier.height(24.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Water Intake", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { navController.navigate(ADSSCREEN) },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                ) {
+                    Text("Ads", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate(PRIVACYPOLICYSCREEN)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                ) {
+                    Text("Privacy Policy", fontSize = 18.sp)
+                }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { showWaterIntakeScreen = true },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(60.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.WaterDrop,
-                    contentDescription = "Water",
-                    modifier = Modifier.height(24.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Water Intake", fontSize = 18.sp)
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { navController.navigate(ADSSCREEN) },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(60.dp)
-            ) {
-                Text("Ads", fontSize = 18.sp)
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = {
-                    navController.navigate(PRIVACYPOLICYSCREEN)
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(60.dp)
-            ) {
-                Text("Privacy Policy", fontSize = 18.sp)
-            }
+            // Banner Ad at bottom
+            BannerAds()
         }
     }
 }

@@ -137,77 +137,85 @@ fun StatusScreen(
         }
     }
 
-    Box {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
         ) {
-            // Title
-            Text(
-                text = "Your Food Dashboard",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            ) {
+                // Title
+                Text(
+                    text = "Your Food Dashboard",
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                )
 
-            Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(16.dp))
 
-            // DATE FILTER
-            OutlinedTextField(
-                value = selectedDate,
-                onValueChange = { selectedDate = it },
-                label = { Text("Enter Date (yyyy-MM-dd)") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                placeholder = { Text("Leave empty for today") }
-            )
+                // DATE FILTER
+                OutlinedTextField(
+                    value = selectedDate,
+                    onValueChange = { selectedDate = it },
+                    label = { Text("Enter Date (yyyy-MM-dd)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    placeholder = { Text("Leave empty for today") }
+                )
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // TIME FILTER CHIPS
-            TimeFilterRow(
-                selectedTime = selectedTime,
-                onTimeSelected = { selectedTime = it }
-            )
+                // TIME FILTER CHIPS
+                TimeFilterRow(
+                    selectedTime = selectedTime,
+                    onTimeSelected = { selectedTime = it }
+                )
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // Summary Cards (Protein + Calories)
-            Text(
-                text = if (selectedDate.isNotEmpty()) "Summary for $selectedDate" else "Today's Summary",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
+                // Summary Cards (Protein + Calories)
+                Text(
+                    text = if (selectedDate.isNotEmpty()) "Summary for $selectedDate" else "Today's Summary",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
 
-            Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
 
-            SummarySection(
-                proteinState = getProteinState,
-                caloriesState = getCaloriesState
-            )
+                SummarySection(
+                    proteinState = getProteinState,
+                    caloriesState = getCaloriesState
+                )
 
-            Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(16.dp))
 
-            // Food Log Section
-            Text(
-                text = "Food Log",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
+                // Food Log Section
+                Text(
+                    text = "Food Log",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
 
-            Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
 
-            FoodListSection(
-                selectedDate = selectedDate,
-                selectedTime = selectedTime,
-                allFoodState = getAllFoodState,
-                byDateState = getByDateState,
-                byTimeState = getByConsumedTimeState,
-                viewModel = viewModel,
-                isDeleting = deleteFoodState.isLoading,
-                isUpdating = upsertFoodState.isLoading
-            )
+                FoodListSection(
+                    selectedDate = selectedDate,
+                    selectedTime = selectedTime,
+                    allFoodState = getAllFoodState,
+                    byDateState = getByDateState,
+                    byTimeState = getByConsumedTimeState,
+                    viewModel = viewModel,
+                    isDeleting = deleteFoodState.isLoading,
+                    isUpdating = upsertFoodState.isLoading
+                )
+            }
+
+            // Banner Ad at bottom
+            BannerAds()
         }
 
         // Snackbar host at the bottom
-        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+        Box(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 60.dp)) {
             SnackbarHost(snackbarHostState)
         }
     }

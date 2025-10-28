@@ -147,221 +147,229 @@ fun WaterIntakeScreen(
                     editingWaterIntake = null
                     showDialog = true
                 },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 60.dp)
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Water Intake")
             }
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Header with Stats
-            Text(
-                "Water Tracker",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(Modifier.height(16.dp))
-
-            // Stats Cards Row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(paddingValues)
+                    .padding(16.dp)
             ) {
-                // Today's Total Card
-                Card(
-                    modifier = Modifier.weight(1f),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            Icons.Default.WaterDrop,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        if (totalWaterState.isLoading) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        } else {
-                            Text(
-                                "${totalWaterState.value.toInt()}",
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Text("ml Today", style = MaterialTheme.typography.bodySmall)
+                // Header with Stats
+                Text(
+                    "Water Tracker",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(Modifier.height(16.dp))
 
-                            // Progress Bar
+                // Stats Cards Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Today's Total Card
+                    Card(
+                        modifier = Modifier.weight(1f),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                Icons.Default.WaterDrop,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(32.dp)
+                            )
                             Spacer(Modifier.height(8.dp))
-                            val progress = (totalWaterState.value / 2000f).coerceIn(0.0, 1.0).toFloat()
-                            LinearProgressIndicator(
-                                progress = { progress },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(8.dp)
-                                    .clip(RoundedCornerShape(4.dp)),
-                                color = MaterialTheme.colorScheme.primary,
-                            )
+                            if (totalWaterState.isLoading) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            } else {
+                                Text(
+                                    "${totalWaterState.value.toInt()}",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Text("ml Today", style = MaterialTheme.typography.bodySmall)
 
-                            Text(
-                                "${(progress * 100).toInt()}% of 2000ml",
-                                style = MaterialTheme.typography.labelSmall
+                                // Progress Bar
+                                Spacer(Modifier.height(8.dp))
+                                val progress = (totalWaterState.value / 2000f).coerceIn(0.0, 1.0).toFloat()
+                                LinearProgressIndicator(
+                                    progress = { progress },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(8.dp)
+                                        .clip(RoundedCornerShape(4.dp)),
+                                    color = MaterialTheme.colorScheme.primary,
+                                )
+
+                                Text(
+                                    "${(progress * 100).toInt()}% of 2000ml",
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
+                    }
+
+                    // Monthly Average Card
+                    Card(
+                        modifier = Modifier.weight(1f),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                Icons.Default.CalendarMonth,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.secondary,
+                                modifier = Modifier.size(32.dp)
                             )
+                            Spacer(Modifier.height(8.dp))
+                            if (averageWaterState.isLoading) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            } else {
+                                Text(
+                                    "${averageWaterState.value.toInt()}",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                                Text("ml/day Avg", style = MaterialTheme.typography.bodySmall)
+                                Text(
+                                    "This Month",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                                )
+                            }
                         }
                     }
                 }
 
-                // Monthly Average Card
-                Card(
-                    modifier = Modifier.weight(1f),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                Spacer(Modifier.height(16.dp))
+
+                // Filter Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Text("Filter:", fontWeight = FontWeight.Medium)
+
+                    FilterChip(
+                        selected = selectedFilter == "All",
+                        onClick = {
+                            selectedFilter = "All"
+                            viewModel.getAllWaterIntakesDescending()
+                        },
+                        label = { Text("All") }
+                    )
+
+                    FilterChip(
+                        selected = selectedFilter == "Today",
+                        onClick = {
+                            selectedFilter = "Today"
+                            viewModel.getWaterIntakesByDate(selectedDate)
+                        },
+                        label = { Text("Today") }
+                    )
+
+                    FilterChip(
+                        selected = selectedFilter == "This Month",
+                        onClick = {
+                            selectedFilter = "This Month"
+                            viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
+                        },
+                        label = { Text("Month") }
+                    )
+
+                    FilterChip(
+                        selected = selectedFilter == "This Year",
+                        onClick = {
+                            selectedFilter = "This Year"
+                            viewModel.getWaterIntakesByYear(selectedYear)
+                        },
+                        label = { Text("Year") }
+                    )
+
+                    Spacer(Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = {
+                            when (selectedFilter) {
+                                "All" -> viewModel.getAllWaterIntakesDescending()
+                                "Today" -> viewModel.getWaterIntakesByDate(selectedDate)
+                                "This Month" -> viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
+                                "This Year" -> viewModel.getWaterIntakesByYear(selectedYear)
+                            }
+                            viewModel.getTotalWaterByDate(selectedDate)
+                            viewModel.getAverageWaterByMonth(selectedMonth, selectedYear)
+                        }
                     ) {
-                        Icon(
-                            Icons.Default.CalendarMonth,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.size(32.dp)
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+
+                // Content
+                when {
+                    isLoading -> {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    error.isNotEmpty() -> {
+                        ErrorView(message = error) {
+                            when (selectedFilter) {
+                                "All" -> viewModel.getAllWaterIntakesDescending()
+                                "Today" -> viewModel.getWaterIntakesByDate(selectedDate)
+                                "This Month" -> viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
+                                "This Year" -> viewModel.getWaterIntakesByYear(selectedYear)
+                            }
+                        }
+                    }
+                    displayData.isEmpty() -> {
+                        EmptyView(message = "No water intake recorded for $selectedFilter")
+                    }
+                    else -> {
+                        Text(
+                            "Water Intake Records (${displayData.size})",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
                         Spacer(Modifier.height(8.dp))
-                        if (averageWaterState.isLoading) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        } else {
-                            Text(
-                                "${averageWaterState.value.toInt()}",
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                            Text("ml/day Avg", style = MaterialTheme.typography.bodySmall)
-                            Text(
-                                "This Month",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
-                            )
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(displayData) { waterIntake ->
+                                WaterIntakeItem(
+                                    waterIntake = waterIntake,
+                                    onEdit = {
+                                        editingWaterIntake = waterIntake
+                                        showDialog = true
+                                    },
+                                    onDelete = { viewModel.deleteWaterIntake(waterIntake) }
+                                )
+                            }
                         }
                     }
                 }
             }
 
-            Spacer(Modifier.height(16.dp))
-
-            // Filter Row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Filter:", fontWeight = FontWeight.Medium)
-
-                FilterChip(
-                    selected = selectedFilter == "All",
-                    onClick = {
-                        selectedFilter = "All"
-                        viewModel.getAllWaterIntakesDescending()
-                    },
-                    label = { Text("All") }
-                )
-
-                FilterChip(
-                    selected = selectedFilter == "Today",
-                    onClick = {
-                        selectedFilter = "Today"
-                        viewModel.getWaterIntakesByDate(selectedDate)
-                    },
-                    label = { Text("Today") }
-                )
-
-                FilterChip(
-                    selected = selectedFilter == "This Month",
-                    onClick = {
-                        selectedFilter = "This Month"
-                        viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
-                    },
-                    label = { Text("Month") }
-                )
-
-                FilterChip(
-                    selected = selectedFilter == "This Year",
-                    onClick = {
-                        selectedFilter = "This Year"
-                        viewModel.getWaterIntakesByYear(selectedYear)
-                    },
-                    label = { Text("Year") }
-                )
-
-                Spacer(Modifier.weight(1f))
-
-                IconButton(
-                    onClick = {
-                        when (selectedFilter) {
-                            "All" -> viewModel.getAllWaterIntakesDescending()
-                            "Today" -> viewModel.getWaterIntakesByDate(selectedDate)
-                            "This Month" -> viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
-                            "This Year" -> viewModel.getWaterIntakesByYear(selectedYear)
-                        }
-                        viewModel.getTotalWaterByDate(selectedDate)
-                        viewModel.getAverageWaterByMonth(selectedMonth, selectedYear)
-                    }
-                ) {
-                    Icon(Icons.Default.Refresh, contentDescription = "Refresh")
-                }
-            }
-
-            Spacer(Modifier.height(16.dp))
-
-            // Content
-            when {
-                isLoading -> {
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-                error.isNotEmpty() -> {
-                    ErrorView(message = error) {
-                        when (selectedFilter) {
-                            "All" -> viewModel.getAllWaterIntakesDescending()
-                            "Today" -> viewModel.getWaterIntakesByDate(selectedDate)
-                            "This Month" -> viewModel.getWaterIntakesByMonth(selectedMonth, selectedYear)
-                            "This Year" -> viewModel.getWaterIntakesByYear(selectedYear)
-                        }
-                    }
-                }
-                displayData.isEmpty() -> {
-                    EmptyView(message = "No water intake recorded for $selectedFilter")
-                }
-                else -> {
-                    Text(
-                        "Water Intake Records (${displayData.size})",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(displayData) { waterIntake ->
-                            WaterIntakeItem(
-                                waterIntake = waterIntake,
-                                onEdit = {
-                                    editingWaterIntake = waterIntake
-                                    showDialog = true
-                                },
-                                onDelete = { viewModel.deleteWaterIntake(waterIntake) }
-                            )
-                        }
-                    }
-                }
-            }
+            // Banner Ad at bottom
+            BannerAds()
         }
     }
 

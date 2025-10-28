@@ -66,99 +66,106 @@ fun ListOfAllFood(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // ✅ Use theme background
+        modifier = Modifier.fillMaxSize()
     ) {
-
-        // 🔍 Search bar with themed colors
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-                databaseOpenerViewModel.searchFood(it)
-            },
-            label = { Text("Search Food...", color = MaterialTheme.colorScheme.primary) },
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            singleLine = true
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
 
-        )
+            // 🔍 Search bar with themed colors
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = {
+                    searchQuery = it
+                    databaseOpenerViewModel.searchFood(it)
+                },
+                label = { Text("Search Food...", color = MaterialTheme.colorScheme.primary) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                singleLine = true
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            when {
-                copyDatabaseState.isLoading || allFoodState.isLoading || searchState.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.primary // ✅ Themed loader
-                    )
-                }
+            )
 
-                copyDatabaseState.error.isNotEmpty() -> {
-                    Text(
-                        text = copyDatabaseState.error,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
+            Box(modifier = Modifier.fillMaxSize()) {
+                when {
+                    copyDatabaseState.isLoading || allFoodState.isLoading || searchState.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.primary // ✅ Themed loader
+                        )
+                    }
 
-                allFoodState.error.isNotEmpty() -> {
-                    Text(
-                        text = allFoodState.error,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
+                    copyDatabaseState.error.isNotEmpty() -> {
+                        Text(
+                            text = copyDatabaseState.error,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
 
-                // ✅ Show search results if user typed something
-                searchQuery.isNotBlank() -> {
-                    if (searchState.data.isNotEmpty()) {
+                    allFoodState.error.isNotEmpty() -> {
+                        Text(
+                            text = allFoodState.error,
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+
+                    // ✅ Show search results if user typed something
+                    searchQuery.isNotBlank() -> {
+                        if (searchState.data.isNotEmpty()) {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                items(searchState.data) { food -> FoodCard(food, navController = navController) }
+                            }
+                        } else {
+                            Text(
+                                text = "No matching food found",
+                                color = MaterialTheme.colorScheme.secondary,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                    }
+
+                    // ✅ Otherwise show all food
+                    allFoodState.data.isNotEmpty() -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            items(searchState.data) { food -> FoodCard(food, navController =navController ) }
+                            items(allFoodState.data) { food -> FoodCard(food, navController) }
                         }
-                    } else {
+                    }
+
+                    else -> {
                         Text(
-                            text = "No matching food found",
+                            text = "No Food Data Found",
                             color = MaterialTheme.colorScheme.secondary,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }
-
-                // ✅ Otherwise show all food
-                allFoodState.data.isNotEmpty() -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(allFoodState.data) { food -> FoodCard(food , navController) }
-                    }
-                }
-
-                else -> {
-                    Text(
-                        text = "No Food Data Found",
-                        color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
             }
         }
+
+        // Banner Ad at bottom
+        BannerAds()
     }
 }
 
 @Composable
-fun FoodCard(food: Food,navController: NavController) {
+fun FoodCard(food: Food, navController: NavController) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(8.dp),
