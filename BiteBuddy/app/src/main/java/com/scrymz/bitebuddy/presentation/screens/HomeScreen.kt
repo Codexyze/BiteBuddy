@@ -77,8 +77,8 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }
-    ) {
-        Box(modifier = Modifier.padding(it)){
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)){
             ContentScreen(navController =navController, index =  selectedindex)
         }
 
