@@ -20,6 +20,35 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# ===== Google Mobile Ads (AdMob) Rules =====
+-keep class com.google.android.gms.ads.** { *; }
+-keep class com.google.ads.** { *; }
+-dontwarn com.google.android.gms.ads.**
+
+# Keep AdView classes
+-keep public class * extends android.view.View
+-keep class * extends androidx.compose.ui.platform.AbstractComposeView { *; }
+
+# Keep classes used by Google Play Services
+-keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.internal.** { *; }
+-dontwarn com.google.android.gms.**
+
+# Keep ad request builder
+-keepclassmembers class com.google.android.gms.ads.AdRequest$Builder {
+    public *;
+}
+
+# Keep ad listeners
+-keep class * implements com.google.android.gms.ads.AdListener { *; }
+-keep class * implements com.google.android.gms.ads.FullScreenContentCallback { *; }
+
+# Keep Google Play Services IID
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
+# ===== End AdMob Rules =====
+
 # Keep Kotlinx Serialization metadata and serializers
 #
 #-keepclassmembers class ** {
@@ -50,7 +79,4 @@
 #-keepclasseswithmembers class kotlinx.serialization.json.** {
 #    kotlinx.serialization.KSerializer serializer(...);
 #}
-#
-## Keep names of serialized classes
-#-keepnames @kotlinx.serialization.Serializable class **
 

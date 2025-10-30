@@ -41,6 +41,7 @@ fun BannerAds(
     var isLoading by remember { mutableStateOf(true) }
     var hasError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    Log.d("BannerAd", "Initializing Banner Ad with ID: $bannerId")
 
     Box(
         modifier = modifier
@@ -119,21 +120,5 @@ fun BannerAds(
                 modifier = Modifier.padding(8.dp)
             )
         }
-    }
-}
-
-/**
- * Full Screen Banner Ad demonstration
- * This is a separate screen if you want to show the banner in isolation
- */
-@Composable
-fun BannerAdsScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        BannerAds()
     }
 }
