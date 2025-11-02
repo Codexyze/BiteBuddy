@@ -91,7 +91,6 @@ data class BottomNaviagtionItem(
     val icon: ImageVector
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ContentScreen(navController: NavController,index: Int) {
 

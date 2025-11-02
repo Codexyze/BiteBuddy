@@ -81,6 +81,7 @@ fun StatusScreen(
 
     var selectedDate by remember { mutableStateOf("") }
     var selectedTime by remember { mutableStateOf("All") }
+    var showDateDropdown by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Handle delete state
@@ -155,15 +156,54 @@ fun StatusScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                // DATE FILTER
-                OutlinedTextField(
-                    value = selectedDate,
-                    onValueChange = { selectedDate = it },
-                    label = { Text("Enter Date (yyyy-MM-dd)") },
+                // DATE FILTER WITH DROPDOWN
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    placeholder = { Text("Leave empty for today") }
-                )
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = selectedDate,
+                        onValueChange = { selectedDate = it },
+                        label = { Text("Enter Date (yyyy-MM-dd)") },
+                        modifier = Modifier.weight(1f),
+                        singleLine = true,
+                        placeholder = { Text("Leave empty for today") }
+                    )
+
+                    Box {
+                        IconButton(
+                            onClick = { showDateDropdown = !showDateDropdown },
+                            modifier = Modifier.size(56.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.ArrowDropDown,
+                                contentDescription = "Select Date",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        DropdownMenu(
+                            expanded = showDateDropdown,
+                            onDismissRequest = { showDateDropdown = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Today") },
+                                onClick = {
+                                    selectedDate = getTodayDate()
+                                    showDateDropdown = false
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Yesterday") },
+                                onClick = {
+                                    selectedDate = getYesterdayDate()
+                                    showDateDropdown = false
+                                }
+                            )
+                        }
+                    }
+                }
 
                 Spacer(Modifier.height(12.dp))
 
@@ -285,15 +325,35 @@ fun FoodListSection(
             EmptyView()
         }
         else -> {
+            // Group food items by date
+            val groupedByDate = foodList.groupBy { it.dateConsumed }
+                .toList()
+                .sortedByDescending { it.first } // Sort dates in descending order (newest first)
+
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(foodList) { food ->
-                    FoodItemCard(
-                        food = food,
-                        onEdit = { updatedFood -> viewModel.upsertFood(updatedFood) },
-                        onDelete = { foodToDelete -> viewModel.deleteFood(foodToDelete) },
-                        isDeleting = isDeleting,
-                        isUpdating = isUpdating
-                    )
+                groupedByDate.forEach { (date, foodsForDate) ->
+                    // Date Header
+                    item {
+                        Text(
+                            text = if (date.isEmpty()) "No Date" else date,
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp)
+                        )
+                    }
+
+                    // Food items for this date
+                    items(foodsForDate) { food ->
+                        FoodItemCard(
+                            food = food,
+                            onEdit = { updatedFood -> viewModel.upsertFood(updatedFood) },
+                            onDelete = { foodToDelete -> viewModel.deleteFood(foodToDelete) },
+                            isDeleting = isDeleting,
+                            isUpdating = isUpdating
+                        )
+                    }
                 }
             }
         }
@@ -649,3 +709,4 @@ private fun refreshData(viewModel: FoodViewModel, selectedDate: String, selected
         viewModel.getByConsumedTime(selectedTime)
     }
 }
+
