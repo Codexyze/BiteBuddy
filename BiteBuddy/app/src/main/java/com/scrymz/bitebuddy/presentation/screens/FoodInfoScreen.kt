@@ -13,8 +13,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -112,11 +115,15 @@ fun FoodInfoScreen(
     femaleImportant: Boolean = false,
     maleImportant: Boolean = false
 ) {
-    // 🟢 1. State for user-entered quantity
-    var quantityText by remember { mutableStateOf(pergram?.toInt()?.toString() ?: "100") }
-    val quantity = quantityText.toDoubleOrNull() ?: 0.0
+    // 🟢 1. State for user-entered quantity with dropdown
+    var quantityText by remember { mutableStateOf("100") }
+    var showQuantityDropdown by remember { mutableStateOf(false) }
+    val quantity = quantityText.toDoubleOrNull() ?: 100.0
     val baseGram = pergram ?: 100.0
     val multiplier = if (baseGram > 0) quantity / baseGram else 1.0
+
+    // Standard weight options
+    val standardWeights = listOf("100", "150", "200", "250", "300", "350", "400", "450", "500")
 
     // 🟢 2. Auto-select time of day (you can later use a dropdown if you want)
     val currentTimeOfDay = remember { getCurrentMealTime() }
@@ -173,14 +180,36 @@ fun FoodInfoScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                OutlinedTextField(
-                    value = quantityText,
-                    onValueChange = { quantityText = it },
-                    label = { Text("Enter Quantity (g)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
+                Box {
+                    OutlinedTextField(
+                        value = quantityText,
+                        onValueChange = { quantityText = it },
+                        label = { Text("Enter Quantity (g)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        trailingIcon = {
+                            IconButton(onClick = { showQuantityDropdown = !showQuantityDropdown }) {
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = "Select Weight")
+                            }
+                        }
+                    )
+
+                    DropdownMenu(
+                        expanded = showQuantityDropdown,
+                        onDismissRequest = { showQuantityDropdown = false }
+                    ) {
+                        standardWeights.forEach { weight ->
+                            DropdownMenuItem(
+                                text = { Text("$weight g") },
+                                onClick = {
+                                    quantityText = weight
+                                    showQuantityDropdown = false
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
             item { InfoCard(title = "Type", value = type ?: "Unknown") }

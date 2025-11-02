@@ -14,12 +14,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -67,6 +70,7 @@ fun MicroDetailsScreen(
 ) {
     val getByDateState by viewModel.getByDateState.collectAsState()
     var selectedDate by remember { mutableStateOf(getTodayDate()) }
+    var showDateDropdown by remember { mutableStateOf(false) }
 
     // Load data for selected date
     LaunchedEffect(selectedDate) {
@@ -92,7 +96,9 @@ fun MicroDetailsScreen(
             // Date Selection
             DateSelectionCard(
                 selectedDate = selectedDate,
-                onDateChange = { selectedDate = it }
+                onDateChange = { selectedDate = it },
+                showDropdown = showDateDropdown,
+                onDropdownChange = { showDateDropdown = it }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -122,7 +128,9 @@ fun MicroDetailsScreen(
 @Composable
 fun DateSelectionCard(
     selectedDate: String,
-    onDateChange: (String) -> Unit
+    onDateChange: (String) -> Unit,
+    showDropdown: Boolean,
+    onDropdownChange: (Boolean) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -132,7 +140,8 @@ fun DateSelectionCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Icon(
                 Icons.Default.CalendarToday,
@@ -140,7 +149,6 @@ fun DateSelectionCard(
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
-            Spacer(modifier = Modifier.padding(8.dp))
             OutlinedTextField(
                 value = selectedDate,
                 onValueChange = onDateChange,
@@ -148,6 +156,39 @@ fun DateSelectionCard(
                 modifier = Modifier.weight(1f),
                 singleLine = true
             )
+
+            Box {
+                IconButton(
+                    onClick = { onDropdownChange(!showDropdown) },
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        Icons.Default.ArrowDropDown,
+                        contentDescription = "Select Date",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = showDropdown,
+                    onDismissRequest = { onDropdownChange(false) }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Today") },
+                        onClick = {
+                            onDateChange(getTodayDate())
+                            onDropdownChange(false)
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Yesterday") },
+                        onClick = {
+                            onDateChange(getYesterdayDate())
+                            onDropdownChange(false)
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -505,4 +546,12 @@ fun calculateNutrients(foodList: List<com.scrymz.bitebuddy.data.entity.FoodTable
             deficiencySymptoms = listOf("Muscle cramps", "Irregular heartbeat", "Seizures")
         )
     )
+}
+
+// Utility function to get yesterday's date in yyyy-MM-dd format
+fun getYesterdayDate(): String {
+    val calendar = java.util.Calendar.getInstance()
+    calendar.add(java.util.Calendar.DAY_OF_YEAR, -1)
+    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+    return sdf.format(calendar.time)
 }
