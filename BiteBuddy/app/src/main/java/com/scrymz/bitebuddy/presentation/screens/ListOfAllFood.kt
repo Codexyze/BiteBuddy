@@ -15,9 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -52,6 +58,8 @@ fun ListOfAllFood(
     val searchState by databaseOpenerViewModel.searchFoodState.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
+    var selectedType by remember { mutableStateOf("All Types") }
+    var showTypeDropdown by remember { mutableStateOf(false) }
 
     // ✅ Start DB copy
     LaunchedEffect(Unit) {
@@ -89,6 +97,50 @@ fun ListOfAllFood(
 
             )
 
+            // 🎯 Type Filter Dropdown
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                OutlinedTextField(
+                    value = selectedType,
+                    onValueChange = { },
+                    label = { Text("Filter by Type") },
+                    readOnly = true,
+                    trailingIcon = {
+                        IconButton(onClick = { showTypeDropdown = !showTypeDropdown }) {
+                            Icon(Icons.Default.ArrowDropDown, contentDescription = "Select Type")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                DropdownMenu(
+                    expanded = showTypeDropdown,
+                    onDismissRequest = { showTypeDropdown = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("All Types") },
+                        onClick = {
+                            selectedType = "All Types"
+                            showTypeDropdown = false
+                        }
+                    )
+                    // Get unique types from the data
+                    val uniqueTypes = allFoodState.data.mapNotNull { it.type }.distinct().sorted()
+                    uniqueTypes.forEach { type ->
+                        DropdownMenuItem(
+                            text = { Text(type) },
+                            onClick = {
+                                selectedType = type
+                                showTypeDropdown = false
+                            }
+                        )
+                    }
+                }
+            }
+
             Box(modifier = Modifier.fillMaxSize()) {
                 when {
                     copyDatabaseState.isLoading || allFoodState.isLoading || searchState.isLoading -> {
@@ -118,13 +170,19 @@ fun ListOfAllFood(
 
                     // ✅ Show search results if user typed something
                     searchQuery.isNotBlank() -> {
-                        if (searchState.data.isNotEmpty()) {
+                        val filteredSearchData = if (selectedType == "All Types") {
+                            searchState.data
+                        } else {
+                            searchState.data.filter { it.type == selectedType }
+                        }
+
+                        if (filteredSearchData.isNotEmpty()) {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
                                 contentPadding = PaddingValues(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                items(searchState.data) { food -> FoodCard(food, navController = navController) }
+                                items(filteredSearchData) { food -> FoodCard(food, navController = navController) }
                             }
                         } else {
                             Text(
@@ -138,12 +196,18 @@ fun ListOfAllFood(
 
                     // ✅ Otherwise show all food
                     allFoodState.data.isNotEmpty() -> {
+                        val filteredData = if (selectedType == "All Types") {
+                            allFoodState.data
+                        } else {
+                            allFoodState.data.filter { it.type == selectedType }
+                        }
+
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            items(allFoodState.data) { food -> FoodCard(food, navController) }
+                            items(filteredData) { food -> FoodCard(food, navController) }
                         }
                     }
 

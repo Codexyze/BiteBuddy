@@ -36,7 +36,9 @@ fun SettingsScreen(navController: NavController) {
         WaterIntakeScreen()
     } else {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 modifier = Modifier
