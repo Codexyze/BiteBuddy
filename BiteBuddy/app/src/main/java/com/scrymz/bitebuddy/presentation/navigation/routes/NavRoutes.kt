@@ -39,3 +39,6 @@ object EXERCISESCREEN
 @Serializable
 object WATERINTAKESCREEN
 
+@Serializable
+object PROGRESSSCREEN
+

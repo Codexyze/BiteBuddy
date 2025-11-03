@@ -5,6 +5,7 @@ import com.scrymz.bitebuddy.data.entity.FoodTable
 import com.scrymz.bitebuddy.data.entity.MenstrualPeriod
 import com.scrymz.bitebuddy.data.entity.WaterIntake
 import com.scrymz.bitebuddy.data.local.model.model.Food
+import com.scrymz.bitebuddy.data.local.model.model.Images
 
 data class CopyDatabaseState(
     val isLoading: Boolean = false,
@@ -235,5 +236,43 @@ data class GetAverageWaterState(
 data class GetWaterIntakesByYearState(
     val isLoading: Boolean = false,
     val data: List<WaterIntake> = emptyList(),
+    val error: String = ""
+)
+
+
+data class GetAllImageState(
+    val isLoading: Boolean = false,
+    val data: List<Images> = emptyList(),
+    val error: String ? = null
+)
+
+// ImageToProgress States
+data class UpsertImageToProgressState(
+    val isLoading: Boolean = false,
+    val message: String = "",
+    val error: String = ""
+)
+
+data class DeleteImageToProgressState(
+    val isLoading: Boolean = false,
+    val message: String = "",
+    val error: String = ""
+)
+
+data class GetAllImageToProgressDescendingState(
+    val isLoading: Boolean = false,
+    val data: List<com.scrymz.bitebuddy.data.entity.ImageToProgress> = emptyList(),
+    val error: String = ""
+)
+
+data class GetImageToProgressByDateState(
+    val isLoading: Boolean = false,
+    val data: List<com.scrymz.bitebuddy.data.entity.ImageToProgress> = emptyList(),
+    val error: String = ""
+)
+
+data class GetImageToProgressByIdState(
+    val isLoading: Boolean = false,
+    val data: com.scrymz.bitebuddy.data.entity.ImageToProgress? = null,
     val error: String = ""
 )
