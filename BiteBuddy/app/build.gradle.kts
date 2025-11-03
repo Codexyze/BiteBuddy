@@ -102,5 +102,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:24.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
 
+    //Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
 }

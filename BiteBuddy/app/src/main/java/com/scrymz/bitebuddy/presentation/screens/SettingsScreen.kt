@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FitnessCenter
+import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.PROGRESSSCREEN
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -76,6 +78,23 @@ fun SettingsScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text("Water Intake", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { navController.navigate(PROGRESSSCREEN) },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.PhotoLibrary,
+                        contentDescription = "Progress",
+                        modifier = Modifier.height(24.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Progress Photos", fontSize = 18.sp)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
