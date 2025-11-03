@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import com.scrymz.bitebuddy.core.DataBaseOpenHelper
 import com.scrymz.bitebuddy.data.dao.ExerciseDao
 import com.scrymz.bitebuddy.data.dao.FoodTableDao
+import com.scrymz.bitebuddy.data.dao.ImageToProgressDao
 import com.scrymz.bitebuddy.data.dao.MenstrualDao
 import com.scrymz.bitebuddy.data.dao.WaterIntakeDao
 import com.scrymz.bitebuddy.data.database.FoodDatabase
@@ -72,6 +73,13 @@ object Dimodule {
         ).fallbackToDestructiveMigration(true).build().exerciseDao()
     }
 
-
+    @Singleton
+    @Provides
+    fun provideImageToProgressDao(@ApplicationContext context: Context): ImageToProgressDao {
+        return Room.databaseBuilder(
+            context = context,
+            FoodDatabase::class.java, "food_db"
+        ).fallbackToDestructiveMigration(true).build().imageToProgressDao()
+    }
 
 }

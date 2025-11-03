@@ -11,12 +11,14 @@ import com.scrymz.bitebuddy.presentation.navigation.routes.EXERCISESCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.FOODINFOSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.HOMESCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.PROGRESSSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.WATERINTAKESCREEN
 import com.scrymz.bitebuddy.presentation.screens.ExerciseScreen
 import com.scrymz.bitebuddy.presentation.screens.FoodInfoScreen
 import com.scrymz.bitebuddy.presentation.screens.HomeScreen
 import com.scrymz.bitebuddy.presentation.screens.InterstitialAdScreen
 import com.scrymz.bitebuddy.presentation.screens.PrivacyPolicyScreen
+import com.scrymz.bitebuddy.presentation.screens.ProgressScreen
 import com.scrymz.bitebuddy.presentation.screens.WaterIntakeScreen
 
 @Composable
@@ -64,6 +66,10 @@ fun BiteBuddy(modifier: Modifier = Modifier) {
 
         composable<WATERINTAKESCREEN> {
             WaterIntakeScreen()
+        }
+
+        composable<PROGRESSSCREEN> {
+            ProgressScreen(navController = navController)
         }
 
     }
