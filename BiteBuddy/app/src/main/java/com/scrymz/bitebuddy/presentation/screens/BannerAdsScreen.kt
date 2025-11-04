@@ -1,6 +1,7 @@
 package com.scrymz.bitebuddy.presentation.screens
 
 import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,85 +41,70 @@ fun BannerAds(
 
     var isLoading by remember { mutableStateOf(true) }
     var hasError by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
-    Log.d("BannerAd", "Initializing Banner Ad with ID: $bannerId")
+
+    val targetHeight by animateDpAsState(
+        targetValue = if (hasError) 0.dp else 60.dp,
+        label = "banner_collapse"
+    )
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(targetHeight)
             .background(MaterialTheme.colorScheme.surfaceVariant),
         contentAlignment = Alignment.Center
     ) {
-        AndroidView(
-            factory = { ctx ->
-                AdView(ctx).apply {
-                    setAdSize(AdSize.BANNER)
-                    adUnitId = bannerId
+        if (!hasError) {
+            AndroidView(
+                factory = { ctx ->
+                    AdView(ctx).apply {
+                        setAdSize(AdSize.BANNER)
+                        adUnitId = bannerId
 
-                    adListener = object : AdListener() {
-                        override fun onAdLoaded() {
-                            super.onAdLoaded()
-                            isLoading = false
-                            hasError = false
-                            Log.d("BannerAd", "Ad loaded successfully")
+                        adListener = object : AdListener() {
+                            override fun onAdLoaded() {
+                                isLoading = false
+                                hasError = false
+                            }
+
+                            override fun onAdFailedToLoad(adError: LoadAdError) {
+                                isLoading = false
+                                hasError = true
+                            }
+
+                            override fun onAdOpened() {
+                                super.onAdOpened()
+                                Log.d("BannerAd", "Ad opened")
+                            }
+
+                            override fun onAdClicked() {
+                                super.onAdClicked()
+                                Log.d("BannerAd", "Ad clicked")
+                            }
+
+                            override fun onAdClosed() {
+                                super.onAdClosed()
+                                Log.d("BannerAd", "Ad closed")
+                            }
+
+                            override fun onAdImpression() {
+                                super.onAdImpression()
+                                Log.d("BannerAd", "Ad impression recorded")
+                            }
                         }
 
-                        override fun onAdFailedToLoad(adError: LoadAdError) {
-                            super.onAdFailedToLoad(adError)
-                            isLoading = false
-                            hasError = true
-                            errorMessage = adError.message
-                            Log.e("BannerAd", "Ad failed to load: ${adError.message}")
-                            Log.e("BannerAd", "Error code: ${adError.code}")
-                            Log.e("BannerAd", "Error domain: ${adError.domain}")
-                        }
-
-                        override fun onAdOpened() {
-                            super.onAdOpened()
-                            Log.d("BannerAd", "Ad opened")
-                        }
-
-                        override fun onAdClicked() {
-                            super.onAdClicked()
-                            Log.d("BannerAd", "Ad clicked")
-                        }
-
-                        override fun onAdClosed() {
-                            super.onAdClosed()
-                            Log.d("BannerAd", "Ad closed")
-                        }
-
-                        override fun onAdImpression() {
-                            super.onAdImpression()
-                            Log.d("BannerAd", "Ad impression recorded")
-                        }
+                        loadAd(AdRequest.Builder().build())
                     }
-
-                    Log.d("BannerAd", "Starting to load ad with ID: $bannerId")
-                    loadAd(AdRequest.Builder().build())
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        // Show loading indicator on top of the AdView while loading
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.padding(8.dp),
-                strokeWidth = 2.dp
+                },
+                modifier = Modifier.fillMaxWidth()
             )
-        }
 
-        // Show error message if ad failed to load
-        if (hasError) {
-            Text(
-                text = "Ad unavailable",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(8.dp)
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.padding(8.dp),
+                    strokeWidth = 2.dp
+                )
+            }
         }
     }
 }
