@@ -1,6 +1,6 @@
 # BiteBuddy - Your Complete Health Companion
 
-## This app will be live soon 
+## This app is live : [Link](https://play.google.com/store/apps/details?id=com.scrymz.bitebuddy)
 
 A comprehensive fitness and nutrition tracking application designed to help you maintain a healthy lifestyle while keeping your data completely private.
 
