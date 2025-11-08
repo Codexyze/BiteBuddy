@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.scrymz.bitebuddy.presentation.navigation.mainapp.BiteBuddy
+import com.scrymz.bitebuddy.presentation.utils.InterstitialAdHelper
 import com.scrymz.bitebuddy.ui.theme.BiteBuddyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,6 +14,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Preload interstitial ad for Progress Tracker feature
+        InterstitialAdHelper.loadAd(this)
+
         setContent {
             BiteBuddyTheme {
                 BiteBuddy()
@@ -20,6 +25,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up ad reference
+        InterstitialAdHelper.destroy()
+    }
 }
 
 

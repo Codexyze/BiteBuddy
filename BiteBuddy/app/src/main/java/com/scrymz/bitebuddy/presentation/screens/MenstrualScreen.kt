@@ -1,5 +1,7 @@
 package com.scrymz.bitebuddy.presentation.screens
 import android.app.ProgressDialog.show
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -83,6 +85,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.scrymz.bitebuddy.Constants.Constants
 import com.scrymz.bitebuddy.data.entity.MenstrualPeriod
 import com.scrymz.bitebuddy.presentation.viewmodels.MenstrualViewModel
+import com.scrymz.bitebuddy.presentation.utils.InterstitialAdHelper
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -183,12 +186,35 @@ fun MenstrualScreen(
     }
 
     if (showDialog) {
+        val context = LocalContext.current
+        val activity = context as? ComponentActivity
+
         AddEditPeriodDialog(
             period = editingPeriod,
             onDismiss = { showDialog = false },
             onSave = { newPeriod ->
+                // Save period
                 viewModel.upsertPeriod(newPeriod)
-                showDialog = false
+
+                // Show interstitial ad after save
+                activity?.let {
+                    Log.d("MenstrualScreen", "Attempting to show interstitial ad")
+                    InterstitialAdHelper.showAd(
+                        activity = it,
+                        onAdDismissed = {
+                            Log.d("MenstrualScreen", "Ad dismissed, closing dialog")
+                            showDialog = false
+                        },
+                        onAdFailed = {
+                            Log.d("MenstrualScreen", "Ad failed or not ready, closing dialog anyway")
+                            showDialog = false
+                        }
+                    )
+                } ?: run {
+                    // If activity is null, just close dialog
+                    Log.w("MenstrualScreen", "Activity is null, cannot show ad")
+                    showDialog = false
+                }
             }
         )
     }
