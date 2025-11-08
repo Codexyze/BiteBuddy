@@ -1,6 +1,8 @@
 package com.scrymz.bitebuddy.presentation.screens
 
 import android.app.DatePickerDialog
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,6 +66,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.scrymz.bitebuddy.Constants.Constants
 import com.scrymz.bitebuddy.data.entity.WaterIntake
 import com.scrymz.bitebuddy.presentation.viewmodels.WaterIntakeViewModel
+import com.scrymz.bitebuddy.presentation.utils.InterstitialAdHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -374,12 +377,35 @@ fun WaterIntakeScreen(
     }
 
     if (showDialog) {
+        val context = LocalContext.current
+        val activity = context as? ComponentActivity
+
         AddEditWaterIntakeDialog(
             waterIntake = editingWaterIntake,
             onDismiss = { showDialog = false },
             onSave = { newWaterIntake ->
+                // Save water intake
                 viewModel.upsertWaterIntake(newWaterIntake)
-                showDialog = false
+
+                // Show interstitial ad after save
+                activity?.let {
+                    Log.d("WaterIntakeScreen", "Attempting to show interstitial ad")
+                    InterstitialAdHelper.showAd(
+                        activity = it,
+                        onAdDismissed = {
+                            Log.d("WaterIntakeScreen", "Ad dismissed, closing dialog")
+                            showDialog = false
+                        },
+                        onAdFailed = {
+                            Log.d("WaterIntakeScreen", "Ad failed or not ready, closing dialog anyway")
+                            showDialog = false
+                        }
+                    )
+                } ?: run {
+                    // If activity is null, just close dialog
+                    Log.w("WaterIntakeScreen", "Activity is null, cannot show ad")
+                    showDialog = false
+                }
             }
         )
     }

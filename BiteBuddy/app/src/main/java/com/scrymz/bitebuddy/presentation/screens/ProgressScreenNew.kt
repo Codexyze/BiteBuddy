@@ -3,6 +3,7 @@ package com.scrymz.bitebuddy.presentation.screens
 import android.Manifest
 import android.os.Build
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -36,6 +37,7 @@ import coil.compose.AsyncImage
 import com.scrymz.bitebuddy.data.entity.ImageToProgress
 import com.scrymz.bitebuddy.presentation.viewmodels.ImageToProgressViewModel
 import com.scrymz.bitebuddy.presentation.viewmodels.ImageViewModel
+import com.scrymz.bitebuddy.presentation.utils.InterstitialAdHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -238,6 +240,8 @@ fun ImageMapperScreen(onBack: () -> Unit) {
 
     // Show Add Dialog
     if (showAddDialog && selectedImage != null) {
+        val activity = LocalContext.current as? ComponentActivity
+
         AddImageToProgressDialog(
             image = selectedImage!!,
             onDismiss = {
@@ -245,7 +249,31 @@ fun ImageMapperScreen(onBack: () -> Unit) {
                 selectedImage = null
             },
             onSave = { imageToProgress ->
+                // Save the progress image
                 imageToProgressViewModel.upsertImageToProgress(imageToProgress)
+
+                // Show interstitial ad after save
+                activity?.let {
+                    Log.d("ProgressScreen", "Attempting to show interstitial ad")
+                    InterstitialAdHelper.showAd(
+                        activity = it,
+                        onAdDismissed = {
+                            Log.d("ProgressScreen", "Ad dismissed, closing dialog")
+                            showAddDialog = false
+                            selectedImage = null
+                        },
+                        onAdFailed = {
+                            Log.d("ProgressScreen", "Ad failed or not ready, closing dialog anyway")
+                            showAddDialog = false
+                            selectedImage = null
+                        }
+                    )
+                } ?: run {
+                    // If activity is null, just close dialog
+                    Log.w("ProgressScreen", "Activity is null, cannot show ad")
+                    showAddDialog = false
+                    selectedImage = null
+                }
             },
             isLoading = upsertState.isLoading
         )
