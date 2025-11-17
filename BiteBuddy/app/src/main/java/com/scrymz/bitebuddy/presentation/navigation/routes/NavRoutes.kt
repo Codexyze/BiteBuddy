@@ -42,3 +42,9 @@ object WATERINTAKESCREEN
 @Serializable
 object PROGRESSSCREEN
 
+// New separate routes
+@Serializable
+object IMAGEMAPPERSCREEN
+
+@Serializable
+object PROGRESSTRACKERSCREEN

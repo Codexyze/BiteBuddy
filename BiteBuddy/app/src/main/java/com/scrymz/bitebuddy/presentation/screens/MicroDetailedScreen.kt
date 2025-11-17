@@ -1,44 +1,15 @@
 package com.scrymz.bitebuddy.presentation.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.viewmodels.FoodViewModel
-import kotlin.math.min
 
 data class NutrientInfo(
     val name: String,
@@ -65,8 +35,8 @@ data class NutrientInfo(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MicroDetailsScreen(
-    navController: NavController,
-    viewModel: FoodViewModel = hiltViewModel()
+    viewModel: FoodViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val getByDateState by viewModel.getByDateState.collectAsState()
     var selectedDate by remember { mutableStateOf(getTodayDate()) }
@@ -266,7 +236,7 @@ fun NutrientCard(nutrient: NutrientInfo) {
             // Progress Bar
             Column {
                 LinearProgressIndicator(
-                    progress = progressPercentage.toFloat(),
+                    progress = { progressPercentage.toFloat() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
@@ -323,7 +293,7 @@ fun NutrientCard(nutrient: NutrientInfo) {
                 InfoSection(
                     title = "Benefits:",
                     items = nutrient.benefits,
-                    color = Color.Green
+                    color = MaterialTheme.colorScheme.primary // replaced Color.Green
                 )
             }
 
@@ -341,7 +311,7 @@ fun NutrientCard(nutrient: NutrientInfo) {
                 InfoSection(
                     title = "Deficiency Signs:",
                     items = nutrient.deficiencySymptoms,
-                    color = Color.Blue
+                    color = MaterialTheme.colorScheme.error // replaced Color.Blue with error to highlight concern
                 )
             }
         }
@@ -364,16 +334,14 @@ fun StatusBadge(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
+            .background(backgroundColor.copy(alpha = 0.15f))
             .padding(horizontal = 12.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-            color = textColor,
-            modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .padding(horizontal = 8.dp, vertical = 2.dp)
+            color = textColor
         )
     }
 }
@@ -387,7 +355,7 @@ fun InfoSection(
     Text(
         text = title,
         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-        color = MaterialTheme.colorScheme.primary
+        color = color
     )
     items.take(3).forEach { item ->
         Text(

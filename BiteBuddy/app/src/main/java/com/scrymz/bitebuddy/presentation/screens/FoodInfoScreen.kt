@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -47,13 +46,16 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
 @Composable
 fun InfoCard(title: String, value: String) {
     Card(
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(6.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -61,8 +63,8 @@ fun InfoCard(title: String, value: String) {
                 .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = title, fontWeight = FontWeight.SemiBold)
-            Text(text = value, color = Color.Gray)
+            Text(text = title, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(text = value, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
@@ -78,15 +80,15 @@ fun SectionHeader(text: String) {
 
 @Composable
 fun BooleanChip(label: String, isTrue: Boolean) {
-    val bgColor = if (isTrue) Color(0xFF4CAF50) else Color(0xFFE57373)
-    val textColor = Color.White
+    val bgColor = if (isTrue) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+    val textColor = MaterialTheme.colorScheme.onPrimary
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(bgColor, RoundedCornerShape(8.dp))
+            .background(bgColor, MaterialTheme.shapes.small)
             .padding(12.dp)
     ) {
-        Text(text = "$label: ${if (isTrue) "Yes" else "No"}", color = textColor)
+        Text(text = "$label: ${if (isTrue) "Yes" else "No"}", color = textColor, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -132,7 +134,7 @@ fun FoodInfoScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(foodname, fontWeight = FontWeight.Bold) },
+                title = { Text(foodname, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -184,7 +186,7 @@ fun FoodInfoScreen(
                     OutlinedTextField(
                         value = quantityText,
                         onValueChange = { quantityText = it },
-                        label = { Text("Enter Quantity (g)") },
+                        label = { Text("Enter Quantity (g)", style = MaterialTheme.typography.bodySmall) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

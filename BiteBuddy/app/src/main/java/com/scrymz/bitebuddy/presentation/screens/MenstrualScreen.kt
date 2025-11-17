@@ -1,6 +1,5 @@
 package com.scrymz.bitebuddy.presentation.screens
-import android.app.ProgressDialog.show
-import android.util.Log
+
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,6 +59,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -81,6 +81,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.scrymz.bitebuddy.Constants.Constants
 import com.scrymz.bitebuddy.data.entity.MenstrualPeriod
@@ -106,82 +108,90 @@ fun MenstrualScreen(
     var editingPeriod by remember { mutableStateOf<MenstrualPeriod?>(null) }
 
     // Load data initially
-    LaunchedEffect(Unit) {
-        viewModel.getAllPeriodsDescending()
-    }
+    LaunchedEffect(Unit) { viewModel.getAllPeriodsDescending() }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
-                // Title
-                Text(
-                    text = "Period Tracker",
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp)
+                ) {
+                    // Title
+                    Text(
+                        text = "Period Tracker",
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
+                    )
 
-                Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(12.dp))
 
-                // Filters
-                FilterRow(
-                    onFilterByMonth = { month, year -> viewModel.getPeriodsByMonth(month, year) },
-                    onFilterByPain = { viewModel.getPeriodsByPainLevel(it) },
-                    onFilterByTimeOfDay = { viewModel.getPeriodsByTimeOfDay(it) },
-                    onResetFilters = { viewModel.getAllPeriodsDescending() }
-                )
+                    // Stats Row (last period, duration, avg cycle)
+                    StatsRow(periods = allPeriodsState.data)
 
-                Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(12.dp))
 
-                when {
-                    allPeriodsState.isLoading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                    }
-                    allPeriodsState.error.isNotEmpty() -> {
-                        ErrorView(message = allPeriodsState.error) {
-                            viewModel.getAllPeriodsDescending()
+                    // Filters
+                    FilterRow(
+                        onFilterByMonth = { month, year -> viewModel.getPeriodsByMonth(month, year) },
+                        onFilterByPain = { viewModel.getPeriodsByPainLevel(it) },
+                        onFilterByTimeOfDay = { viewModel.getPeriodsByTimeOfDay(it) },
+                        onResetFilters = { viewModel.getAllPeriodsDescending() }
+                    )
+
+                    Spacer(Modifier.height(12.dp))
+
+                    when {
+                        allPeriodsState.isLoading -> {
+                            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
                         }
-                    }
-                    allPeriodsState.data.isEmpty() -> {
-                        EmptyView(message = "No periods recorded yet.")
-                    }
-                    else -> {
-                        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            items(allPeriodsState.data) { period ->
-                                PeriodItem(
-                                    period = period,
-                                    onEdit = {
-                                        editingPeriod = period
-                                        showDialog = true
-                                    },
-                                    onDelete = { viewModel.deletePeriod(period) }
-                                )
+                        allPeriodsState.error.isNotEmpty() -> {
+                            ErrorView(message = allPeriodsState.error) {
+                                viewModel.getAllPeriodsDescending()
+                            }
+                        }
+                        allPeriodsState.data.isEmpty() -> {
+                            EmptyView(message = "No periods recorded yet.")
+                        }
+                        else -> {
+                            LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                items(allPeriodsState.data) { period ->
+                                    PeriodItem(
+                                        period = period,
+                                        onEdit = {
+                                            editingPeriod = period
+                                            showDialog = true
+                                        },
+                                        onDelete = { viewModel.deletePeriod(period) }
+                                    )
+                                }
                             }
                         }
                     }
                 }
+
+                // Banner Ad at bottom
+                BannerAds()
             }
 
-            // Banner Ad at bottom
-            BannerAds()
-        }
-
-        // Floating Action Button
-        FloatingActionButton(
-            onClick = {
-                editingPeriod = null
-                showDialog = true
-            },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-                .padding(bottom = 60.dp)
-        ) {
-            Icon(Icons.Default.Add, contentDescription = "Add Period")
+            // Floating Action Button
+            FloatingActionButton(
+                onClick = {
+                    editingPeriod = null
+                    showDialog = true
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+                    .padding(bottom = 60.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Period")
+            }
         }
     }
 
@@ -193,28 +203,14 @@ fun MenstrualScreen(
             period = editingPeriod,
             onDismiss = { showDialog = false },
             onSave = { newPeriod ->
-                // Save period
                 viewModel.upsertPeriod(newPeriod)
-
-                // Show interstitial ad after save
                 activity?.let {
-                    Log.d("MenstrualScreen", "Attempting to show interstitial ad")
                     InterstitialAdHelper.showAd(
                         activity = it,
-                        onAdDismissed = {
-                            Log.d("MenstrualScreen", "Ad dismissed, closing dialog")
-                            showDialog = false
-                        },
-                        onAdFailed = {
-                            Log.d("MenstrualScreen", "Ad failed or not ready, closing dialog anyway")
-                            showDialog = false
-                        }
+                        onAdDismissed = { showDialog = false },
+                        onAdFailed = { showDialog = false }
                     )
-                } ?: run {
-                    // If activity is null, just close dialog
-                    Log.w("MenstrualScreen", "Activity is null, cannot show ad")
-                    showDialog = false
-                }
+                } ?: run { showDialog = false }
             }
         )
     }
@@ -227,18 +223,103 @@ fun MenstrualScreen(
 }
 
 @Composable
+private fun StatsRow(periods: List<MenstrualPeriod>) {
+    if (periods.isEmpty()) return
+    val sdf = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
+    val sorted = remember(periods) { periods.sortedByDescending { it.startDate } }
+    val last = sorted.firstOrNull()
+
+    val avgCycle = remember(sorted) {
+        val starts = sorted.mapNotNull { runCatching { sdf.parse(it.startDate) }.getOrNull() }
+        if (starts.size < 2) null else {
+            val diffs = starts.zip(starts.drop(1)).map { (a, b) ->
+                val days = ChronoUnit.DAYS.between(b.toInstant(), a.toInstant()).toInt()
+                days
+            }
+            if (diffs.isNotEmpty()) diffs.average().roundToInt() else null
+        }
+    }
+
+    val lastDurationDays = remember(last) {
+        if (last?.endDate == null) null else {
+            val s = runCatching { sdf.parse(last.startDate) }.getOrNull()
+            val e = runCatching { last.endDate?.let { sdf.parse(it) } }.getOrNull()
+            if (s != null && e != null) {
+                ChronoUnit.DAYS.between(s.toInstant(), e.toInstant()).toInt() + 1
+            } else null
+        }
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        StatCard(title = "Last Start", value = last?.startDate ?: "--", modifier = Modifier.weight(1f))
+        StatCard(title = "Duration", value = lastDurationDays?.let { "$it days" } ?: "--", modifier = Modifier.weight(1f))
+        StatCard(title = "Avg Cycle", value = avgCycle?.let { "$it days" } ?: "--", modifier = Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun StatCard(title: String, value: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(2.dp)
+    ) {
+        Column(Modifier.padding(12.dp)) {
+            Text(title, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(Modifier.height(6.dp))
+            Text(value, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+        }
+    }
+}
+
+@Composable
 fun FilterRow(
     onFilterByMonth: (Int, Int) -> Unit,
     onFilterByPain: (String) -> Unit,
     onFilterByTimeOfDay: (String) -> Unit,
     onResetFilters: () -> Unit
 ) {
-//    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-//        Button(onClick = { onFilterByMonth(9, 2025) }) { Text("This Month") }
-//        Button(onClick = { onFilterByPain("Severe") }) { Text("Severe Pain") }
-//        Button(onClick = { onFilterByTimeOfDay("Morning") }) { Text("Morning") }
-//        OutlinedButton(onClick = { onResetFilters() }) { Text("Reset") }
-//    }
+    val cal = remember { Calendar.getInstance() }
+    val curMonth = cal.get(Calendar.MONTH) + 1
+    val curYear = cal.get(Calendar.YEAR)
+
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp)
+    ) {
+        item {
+            FilterChip(
+                selected = false,
+                onClick = { onFilterByMonth(curMonth, curYear) },
+                label = { Text("This Month", maxLines = 1) },
+                leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null) }
+            )
+        }
+        item {
+            FilterChip(
+                selected = false,
+                onClick = { onFilterByPain("Severe") },
+                label = { Text("Severe Pain", maxLines = 1) },
+                leadingIcon = { Icon(Icons.Default.LocalHospital, contentDescription = null) }
+            )
+        }
+        item {
+            FilterChip(
+                selected = false,
+                onClick = { onFilterByTimeOfDay("Morning") },
+                label = { Text("Morning", maxLines = 1) },
+                leadingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = null) }
+            )
+        }
+        item {
+            OutlinedButton(onClick = onResetFilters) { Text("Reset") }
+        }
+    }
 }
 
 @Composable
@@ -247,33 +328,106 @@ fun PeriodItem(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val ongoing = period.endDate.isNullOrBlank()
+    val painColor = when (period.painLevel) {
+        "Severe" -> MaterialTheme.colorScheme.error
+        "Mild" -> MaterialTheme.colorScheme.tertiary
+        else -> MaterialTheme.colorScheme.primary
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(4.dp)
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(6.dp)
     ) {
-        Column(Modifier.padding(12.dp)) {
-            Text("${period.startDate} → ${period.endDate ?: "Ongoing"}", fontWeight = FontWeight.Bold)
-            Text("Pain: ${period.painLevel} | Flow: ${period.flowIntensity}")
-            Text("Time: ${period.timeAppeared}")
-            period.symptoms?.let { Text("Symptoms: $it") }
-            period.notes?.let { Text("Notes: $it") }
+        Column(Modifier.padding(14.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        text = "${period.startDate} → ${period.endDate ?: "Ongoing"}",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = "Time: ${period.timeAppeared}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (ongoing) StatusBadge(text = "ACTIVE", color = MaterialTheme.colorScheme.primary)
+            }
 
+            Spacer(Modifier.height(10.dp))
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                InfoChip(icon = Icons.Default.LocalHospital, label = period.painLevel, container = painColor)
+                InfoChip(icon = Icons.Default.Opacity, label = period.flowIntensity, container = MaterialTheme.colorScheme.secondary)
+                InfoChip(icon = Icons.Default.CalendarToday, label = period.timeAppeared, container = MaterialTheme.colorScheme.secondaryContainer)
+            }
+
+            period.symptoms?.takeIf { it.isNotBlank() }?.let {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "Symptoms: $it",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            period.notes?.takeIf { it.isNotBlank() }?.let {
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    text = "Notes: $it",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = onEdit) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit")
-                }
-                IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete")
-                }
+                IconButton(onClick = onEdit) { Icon(Icons.Default.Edit, contentDescription = "Edit") }
+                IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, contentDescription = "Delete", tint = MaterialTheme.colorScheme.error) }
             }
         }
     }
 }
 
+@Composable
+private fun StatusBadge(text: String, color: Color) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(color.copy(alpha = 0.15f))
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    ) {
+        Text(text = text, color = color, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun InfoChip(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, container: Color) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(container.copy(alpha = 0.15f))
+            .padding(horizontal = 10.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = null, tint = container, modifier = Modifier.size(16.dp))
+        Spacer(Modifier.width(6.dp))
+        Text(label, style = MaterialTheme.typography.labelLarge, color = container)
+    }
+}
 
 @Composable
 fun EmptyView(message: String) {
