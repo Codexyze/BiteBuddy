@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 fun HomeScreen(navController: NavController) {
     var selectedindex by rememberSaveable { mutableStateOf(0) }
 
-    val bottonNavList = listOf<BottomNaviagtionItem>(
+    val bottonNavList = listOf(
         BottomNaviagtionItem(
             title = "Status",
             icon = Icons.Outlined.GraphicEq
@@ -50,45 +50,45 @@ fun HomeScreen(navController: NavController) {
         )
     )
 
-        Scaffold(
-            topBar = {
+    Scaffold(
+        topBar = {
 
-            },
-            bottomBar = {
-                NavigationBar() {
-                    bottonNavList.forEachIndexed { index, item ->
-                        NavigationBarItem(
-                            selected = index == selectedindex,
-                            onClick = {
-                                selectedindex = index
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = item.icon, contentDescription = item.title,
-                                    tint = if (index == selectedindex) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.secondary
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = item.title,
-                                    color = if (index == selectedindex) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.secondary
-                                )
-                            }
+        },
+        bottomBar = {
+            NavigationBar() {
+                bottonNavList.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = index == selectedindex,
+                        onClick = {
+                            selectedindex = index
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = item.icon, contentDescription = item.title,
+                                tint = if (index == selectedindex) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.secondary
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = item.title,
+                                color = if (index == selectedindex) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.secondary
+                            )
+                        }
 
-                        )
+                    )
 
-                    }
                 }
             }
-        ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
-                ContentScreen(navController = navController, index = selectedindex)
-            }
-
         }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            ContentScreen(navController = navController, index = selectedindex)
+        }
+
     }
+}
 
 data class BottomNaviagtionItem(
     val title: String,

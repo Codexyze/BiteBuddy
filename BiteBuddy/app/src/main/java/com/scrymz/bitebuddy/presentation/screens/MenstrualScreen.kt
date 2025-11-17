@@ -75,6 +75,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -121,10 +122,19 @@ fun MenstrualScreen(
                         .padding(16.dp)
                 ) {
                     // Title
+                    val titleGradient = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+                    )
                     Text(
                         text = "Period Tracker",
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            brush = titleGradient
+                        )
                     )
 
                     Spacer(Modifier.height(12.dp))
@@ -233,8 +243,7 @@ private fun StatsRow(periods: List<MenstrualPeriod>) {
         val starts = sorted.mapNotNull { runCatching { sdf.parse(it.startDate) }.getOrNull() }
         if (starts.size < 2) null else {
             val diffs = starts.zip(starts.drop(1)).map { (a, b) ->
-                val days = ChronoUnit.DAYS.between(b.toInstant(), a.toInstant()).toInt()
-                days
+                ChronoUnit.DAYS.between(b.toInstant(), a.toInstant()).toInt()
             }
             if (diffs.isNotEmpty()) diffs.average().roundToInt() else null
         }
@@ -244,17 +253,23 @@ private fun StatsRow(periods: List<MenstrualPeriod>) {
         if (last?.endDate == null) null else {
             val s = runCatching { sdf.parse(last.startDate) }.getOrNull()
             val e = runCatching { last.endDate?.let { sdf.parse(it) } }.getOrNull()
-            if (s != null && e != null) {
-                ChronoUnit.DAYS.between(s.toInstant(), e.toInstant()).toInt() + 1
-            } else null
+            if (s != null && e != null) ChronoUnit.DAYS.between(s.toInstant(), e.toInstant()).toInt() + 1 else null
         }
     }
 
+    // First line: Last Start full width
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        StatCard(title = "Last Start", value = last?.startDate ?: "--", modifier = Modifier.weight(1f))
+        StatCard(title = "Last Start", value = last?.startDate ?: "--", modifier = Modifier.fillMaxWidth())
+    }
+    Spacer(Modifier.height(8.dp))
+    // Second line: Duration and Avg Cycle side by side
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         StatCard(title = "Duration", value = lastDurationDays?.let { "$it days" } ?: "--", modifier = Modifier.weight(1f))
         StatCard(title = "Avg Cycle", value = avgCycle?.let { "$it days" } ?: "--", modifier = Modifier.weight(1f))
     }
@@ -269,9 +284,17 @@ private fun StatCard(title: String, value: String, modifier: Modifier = Modifier
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(Modifier.padding(12.dp)) {
-            Text(title, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(Modifier.height(6.dp))
-            Text(value, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+            Text(
+                title,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                value,
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

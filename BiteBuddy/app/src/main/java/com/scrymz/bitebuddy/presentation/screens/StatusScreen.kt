@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -50,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -149,9 +151,19 @@ fun StatusScreen(
                     .padding(16.dp)
             ) {
                 // Title
+                val titleGradient = Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.secondary,
+                        MaterialTheme.colorScheme.tertiary
+                    )
+                )
                 Text(
                     text = "Your Food Dashboard",
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        brush = titleGradient
+                    )
                 )
 
                 Spacer(Modifier.height(16.dp))
@@ -433,37 +445,37 @@ fun TimeFilterRow(
 fun SummaryRow(protein: Double, calories: Double) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SummaryCard(title = "Protein", value = "${protein.format()} g")
-        SummaryCard(title = "Calories", value = "${calories.format()} kcal")
+        SummaryCard(title = "Protein", value = "${protein.format()} g", modifier = Modifier.weight(1f))
+        SummaryCard(title = "Calories", value = "${calories.format()} kcal", modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
-fun SummaryCard(title: String, value: String) {
+fun SummaryCard(title: String, value: String, modifier: Modifier = Modifier) {
     Card(
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(6.dp),
-        modifier = Modifier.padding(horizontal = 4.dp),
+        modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
                 fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleSmall
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.primary
             )
         }
@@ -484,39 +496,52 @@ fun FoodItemCard(
     Card(
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 120.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
-        Column(Modifier.padding(12.dp)) {
+        Column(Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = food.foodname, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                    Spacer(Modifier.height(4.dp))
-                    Text(text = "Consumed: ${food.gramConsumed?.format() ?: "0.0"} g", style = MaterialTheme.typography.bodySmall)
-                    Text(text = "Calories: ${food.calories?.format() ?: "0.0"}", style = MaterialTheme.typography.bodySmall)
-                    Text(text = "Protein: ${food.protein?.format() ?: "0.0"} g", style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        text = food.foodname,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = "Consumed: ${food.gramConsumed?.format() ?: "0.0"} g",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = "Calories: ${food.calories?.format() ?: "0.0"}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = "Protein: ${food.protein?.format() ?: "0.0"} g",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Text(
                         text = "Time: ${food.timeConsumed.ifEmpty { "--" }} | Date: ${food.dateConsumed.ifEmpty { "--" }}",
-                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                     )
                 }
 
                 Column {
                     IconButton(
                         onClick = { showEditDialog = true },
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(36.dp),
                         enabled = !isUpdating && !isDeleting
                     ) {
                         if (isUpdating) {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(16.dp),
+                                modifier = Modifier.size(18.dp),
                                 strokeWidth = 2.dp
                             )
                         } else {
@@ -524,18 +549,18 @@ fun FoodItemCard(
                                 Icons.Default.Edit,
                                 contentDescription = "Edit",
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                     }
                     IconButton(
                         onClick = { showDeleteDialog = true },
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(36.dp),
                         enabled = !isUpdating && !isDeleting
                     ) {
                         if (isDeleting) {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(16.dp),
+                                modifier = Modifier.size(18.dp),
                                 strokeWidth = 2.dp,
                                 color = MaterialTheme.colorScheme.error
                             )
@@ -544,7 +569,7 @@ fun FoodItemCard(
                                 Icons.Default.Delete,
                                 contentDescription = "Delete",
                                 tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                     }
