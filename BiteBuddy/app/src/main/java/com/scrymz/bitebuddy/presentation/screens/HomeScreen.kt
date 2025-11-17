@@ -1,15 +1,13 @@
 package com.scrymz.bitebuddy.presentation.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.LibraryMusic
 import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.More
 import androidx.compose.material.icons.outlined.PlaylistAddCheck
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -47,44 +45,50 @@ fun HomeScreen(navController: NavController) {
             icon = Icons.Outlined.PlaylistAddCheck
         ),
         BottomNaviagtionItem(
-            title = "Settings",
-            icon = Icons.Outlined.Settings
+            title = "More",
+            icon = Icons.Outlined.More
         )
     )
 
+        Scaffold(
+            topBar = {
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar() {
-                bottonNavList.forEachIndexed{index,item->
-                    NavigationBarItem(
-                        selected = index == selectedindex,
-                        onClick = {
-                            selectedindex = index
-                        },
-                        icon = {
-                            Icon(imageVector = item.icon, contentDescription = item.title,
-                                tint = if(index==selectedindex) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.secondary)
-                        },
-                        label = {
-                            Text(text = item.title, color = if(index==selectedindex) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.secondary)
-                        }
+            },
+            bottomBar = {
+                NavigationBar() {
+                    bottonNavList.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            selected = index == selectedindex,
+                            onClick = {
+                                selectedindex = index
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon, contentDescription = item.title,
+                                    tint = if (index == selectedindex) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.secondary
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = item.title,
+                                    color = if (index == selectedindex) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.secondary
+                                )
+                            }
 
-                    )
+                        )
 
+                    }
                 }
             }
-        }
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)){
-            ContentScreen(navController =navController, index =  selectedindex)
-        }
+        ) { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                ContentScreen(navController = navController, index = selectedindex)
+            }
 
+        }
     }
-
-}
 
 data class BottomNaviagtionItem(
     val title: String,
@@ -113,7 +117,7 @@ fun ContentScreen(navController: NavController,index: Int) {
 
         }
         4 -> {
-            SettingsScreen(navController = navController)
+            MoreScreen(navController = navController)
         }
 
     }

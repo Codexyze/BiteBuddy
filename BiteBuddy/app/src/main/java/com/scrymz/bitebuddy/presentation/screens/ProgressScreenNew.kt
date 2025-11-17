@@ -76,9 +76,10 @@ fun ProgressScreen(
                     onClick = { showImageMapper = true },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(60.dp)
+                        .height(60.dp),
+                    shape = MaterialTheme.shapes.medium
                 ) {
-                    Text("Image Mapper", fontSize = 18.sp)
+                    Text("Image Mapper", style = MaterialTheme.typography.titleMedium)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -87,9 +88,10 @@ fun ProgressScreen(
                     onClick = { showProgressTracker = true },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(60.dp)
+                        .height(60.dp),
+                    shape = MaterialTheme.shapes.medium
                 ) {
-                    Text("Progress Tracker", fontSize = 18.sp)
+                    Text("Progress Tracker", style = MaterialTheme.typography.titleMedium)
                 }
             }
 
@@ -662,7 +664,7 @@ fun PermissionDeniedContent(onRetry: () -> Unit) {
                 text = "This feature requires permission to access your photos.\n\nPlease grant permission to continue.",
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
-                fontSize = 16.sp
+                style = MaterialTheme.typography.bodyLarge
             )
 
             Button(onClick = onRetry) {
@@ -685,7 +687,8 @@ fun LoadingContent(message: String) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -728,4 +731,3 @@ fun EmptyContent(message: String) {
         )
     }
 }
-

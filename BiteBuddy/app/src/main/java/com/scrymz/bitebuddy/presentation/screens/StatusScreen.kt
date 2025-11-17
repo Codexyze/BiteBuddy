@@ -443,9 +443,13 @@ fun SummaryRow(protein: Double, calories: Double) {
 @Composable
 fun SummaryCard(title: String, value: String) {
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(6.dp),
-        modifier = Modifier.padding(horizontal = 4.dp)
+        modifier = Modifier.padding(horizontal = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -478,9 +482,13 @@ fun FoodItemCard(
     var showEditDialog by remember { mutableStateOf(false) }
 
     Card(
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(Modifier.padding(12.dp)) {
             Row(
@@ -489,14 +497,14 @@ fun FoodItemCard(
                 verticalAlignment = Alignment.Top
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = food.foodname, fontWeight = FontWeight.Bold)
+                    Text(text = food.foodname, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
                     Spacer(Modifier.height(4.dp))
-                    Text(text = "Consumed: ${food.gramConsumed?.format() ?: "0.0"} g")
-                    Text(text = "Calories: ${food.calories?.format() ?: "0.0"}")
-                    Text(text = "Protein: ${food.protein?.format() ?: "0.0"} g")
+                    Text(text = "Consumed: ${food.gramConsumed?.format() ?: "0.0"} g", style = MaterialTheme.typography.bodySmall)
+                    Text(text = "Calories: ${food.calories?.format() ?: "0.0"}", style = MaterialTheme.typography.bodySmall)
+                    Text(text = "Protein: ${food.protein?.format() ?: "0.0"} g", style = MaterialTheme.typography.bodySmall)
                     Text(
                         text = "Time: ${food.timeConsumed.ifEmpty { "--" }} | Date: ${food.dateConsumed.ifEmpty { "--" }}",
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                     )
                 }
 
@@ -709,4 +717,3 @@ private fun refreshData(viewModel: FoodViewModel, selectedDate: String, selected
         viewModel.getByConsumedTime(selectedTime)
     }
 }
-
