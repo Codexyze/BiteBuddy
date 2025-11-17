@@ -1,6 +1,7 @@
 package com.scrymz.bitebuddy.presentation.screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -55,13 +56,17 @@ fun ProgressScreen(
         ProgressTrackerScreen(onBack = { showProgressTracker = false })
     } else {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .background(MaterialTheme.colorScheme.background),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -69,26 +74,26 @@ fun ProgressScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 32.dp)
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Button(
                     onClick = { showImageMapper = true },
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .height(60.dp),
+                        .fillMaxWidth()
+                        .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text("Image Mapper", style = MaterialTheme.typography.titleMedium)
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
                     onClick = { showProgressTracker = true },
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .height(60.dp),
+                        .fillMaxWidth()
+                        .height(56.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text("Progress Tracker", style = MaterialTheme.typography.titleMedium)
@@ -101,6 +106,7 @@ fun ProgressScreen(
     }
 }
 
+@SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageMapperScreen(onBack: () -> Unit) {
