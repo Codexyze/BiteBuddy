@@ -100,10 +100,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 
     //ads
-    implementation("com.google.android.gms:play-services-ads:24.6.0")
+    implementation("com.google.android.gms:play-services-ads:24.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
 
     //Coil for image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    implementation("androidx.core:core-splashscreen:1.2.0")
 
 }

@@ -33,7 +33,7 @@ val TextPrimaryDark = Color(0xFFE0E0E0)       // Light gray for dark mode
 val TextSecondaryDark = Color(0xFFB0B0B0)     // Muted gray for dark secondary
 
 // 🎯 Status Colors (Universal)
-val SuccessGreen = Color(0xFF4CAF50)          // Success states
+val SuccessGreen = Color(0xFF64DF69)          // Success states
 val WarningOrange = Color(0xFFFF9800)         // Warning states
 val ErrorRed = Color(0xFFF44336)              // Error states
 val InfoBlue = Color(0xFF2196F3)              // Info states
