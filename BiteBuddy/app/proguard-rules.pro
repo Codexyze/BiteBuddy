@@ -5,78 +5,289 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ================================================================================================
+# GENERAL RULES
+# ================================================================================================
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Preserve line numbers for debugging stack traces
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep annotations
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
 
-# ===== Google Mobile Ads (AdMob) Rules =====
--keep class com.google.android.gms.ads.** { *; }
--keep class com.google.ads.** { *; }
--dontwarn com.google.android.gms.ads.**
+# ================================================================================================
+# ANDROID & ANDROIDX RULES
+# ================================================================================================
 
-# Keep AdView classes
--keep public class * extends android.view.View
--keep class * extends androidx.compose.ui.platform.AbstractComposeView { *; }
+# Keep Android components
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
 
-# Keep classes used by Google Play Services
--keep class com.google.android.gms.common.** { *; }
--keep class com.google.android.gms.internal.** { *; }
--dontwarn com.google.android.gms.**
-
-# Keep ad request builder
--keepclassmembers class com.google.android.gms.ads.AdRequest$Builder {
-    public *;
+# Keep view constructors
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
 }
 
-# Keep ad listeners
--keep class * implements com.google.android.gms.ads.AdListener { *; }
--keep class * implements com.google.android.gms.ads.FullScreenContentCallback { *; }
+# ================================================================================================
+# ROOM DATABASE RULES
+# ================================================================================================
 
-# Keep Google Play Services IID
--keep class com.google.android.gms.** { *; }
--dontwarn com.google.android.gms.**
+# Keep all Room entities
+-keep @androidx.room.Entity class * {*;}
+-keep class * extends androidx.room.RoomDatabase {*;}
 
-# ===== End AdMob Rules =====
+# Keep all DAOs
+-keep @androidx.room.Dao class * {*;}
+-keepclassmembers class * extends androidx.room.RoomDatabase {
+    public abstract <methods>;
+}
 
-# Keep Kotlinx Serialization metadata and serializers
-#
-#-keepclassmembers class ** {
-#    @kotlinx.serialization.Serializable *;
-#}
-#-keep class kotlinx.serialization.** { *; }
-#-keepclassmembers class **$Companion {
-#    kotlinx.serialization.KSerializer serializer(...);
-#}
-#-keepattributes *Annotation*
-#
-## Keep all navigation route classes (they use @Serializable for type-safe navigation)
-#-keep @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** { *; }
-#-keepclassmembers @kotlinx.serialization.Serializable class com.scrymz.bitebuddy.presentation.navigation.routes.** {
-#    <fields>;
-#    <init>(...);
-#}
-#
-## Keep serializers for navigation routes
-#-keep class com.scrymz.bitebuddy.presentation.navigation.routes.**$$serializer { *; }
-#
-## Additional serialization support
-#-keepattributes InnerClasses
-#-dontnote kotlinx.serialization.AnnotationsKt
-#-keepclassmembers class kotlinx.serialization.json.** {
-#    *** Companion;
-#}
-#-keepclasseswithmembers class kotlinx.serialization.json.** {
-#    kotlinx.serialization.KSerializer serializer(...);
-#}
+# Keep Room database classes
+-keep class com.scrymz.bitebuddy.data.database.** {*;}
+-keep class com.scrymz.bitebuddy.data.entity.** {*;}
+-keep class com.scrymz.bitebuddy.data.dao.** {*;}
 
+# Keep all entities with @Keep annotation
+-keep @androidx.annotation.Keep class * {*;}
+
+# ================================================================================================
+# HILT / DAGGER RULES
+# ================================================================================================
+
+# Keep Hilt generated classes
+-keep class dagger.** {*;}
+-keep class javax.inject.** {*;}
+-dontwarn dagger.internal.**
+
+# Keep Hilt modules and injected classes
+-keep @dagger.hilt.android.HiltAndroidApp class * {*;}
+-keep @dagger.Module class * {*;}
+-keep @dagger.hilt.InstallIn class * {*;}
+-keep class * {
+    @javax.inject.Inject <init>(...);
+    @javax.inject.Inject <fields>;
+    @javax.inject.Inject <methods>;
+}
+
+# Keep Hilt ViewModels
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * {*;}
+
+# Keep DI modules and repositories
+-keep class com.scrymz.bitebuddy.di.** {*;}
+-keep class com.scrymz.bitebuddy.domain.repository.** {*;}
+-keep class com.scrymz.bitebuddy.data.repoImpl.** {*;}
+-keep class com.scrymz.bitebuddy.domain.usecases.** {*;}
+
+# ================================================================================================
+# JETPACK COMPOSE RULES
+# ================================================================================================
+
+# Keep Composable functions
+-keep @androidx.compose.runtime.Composable class * {*;}
+-keepclassmembers class * {
+    @androidx.compose.runtime.Composable <methods>;
+}
+
+# Keep Compose runtime classes
+-keep class androidx.compose.runtime.** {*;}
+-keep class androidx.compose.ui.** {*;}
+-keep class androidx.compose.foundation.** {*;}
+-keep class androidx.compose.material3.** {*;}
+-keep class androidx.compose.material.** {*;}
+
+# Keep ViewModel classes
+-keep class * extends androidx.lifecycle.ViewModel {*;}
+-keep class com.scrymz.bitebuddy.presentation.viewmodels.** {*;}
+
+# ================================================================================================
+# KOTLINX SERIALIZATION RULES
+# ================================================================================================
+
+# Keep serializable classes
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+-keepclassmembers class kotlinx.serialization.json.** {
+    *** Companion;
+}
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep @Serializable classes
+-keep @kotlinx.serialization.Serializable class * {*;}
+-keepclassmembers @kotlinx.serialization.Serializable class * {
+    *** Companion;
+    *** INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep Navigation routes
+-keep class com.scrymz.bitebuddy.presentation.navigation.routes.** {*;}
+
+# ================================================================================================
+# GOOGLE ADMOB & PLAY SERVICES RULES
+# ================================================================================================
+
+# Keep AdMob classes
+-keep class com.google.android.gms.ads.** {*;}
+-keep class com.google.android.gms.internal.ads.** {*;}
+-dontwarn com.google.android.gms.ads.**
+
+# Keep WebView for ads
+-keepclassmembers class * extends android.webkit.WebView {
+    public *;
+}
+-keepclassmembers class * extends android.webkit.WebChromeClient {
+    public void *(android.webkit.WebView, java.lang.String);
+}
+
+# Keep ad helper classes
+-keep class com.scrymz.bitebuddy.presentation.utils.InterstitialAdHelper {*;}
+-keep class com.scrymz.bitebuddy.presentation.screens.AdsScreen** {*;}
+-keep class com.scrymz.bitebuddy.presentation.screens.BannerAdsScreen** {*;}
+
+# ================================================================================================
+# COIL IMAGE LOADING RULES
+# ================================================================================================
+
+# Keep Coil classes
+-keep class coil.** {*;}
+-keep interface coil.** {*;}
+-dontwarn coil.**
+
+# ================================================================================================
+# KOTLIN & COROUTINES RULES
+# ================================================================================================
+
+# Keep Kotlin metadata
+-keep class kotlin.Metadata {*;}
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+# Keep coroutines
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+-keepclassmembers class kotlinx.coroutines.** {*;}
+
+# Keep sealed classes
+-keep class * extends kotlin.coroutines.Continuation
+
+# ================================================================================================
+# NAVIGATION COMPONENT RULES
+# ================================================================================================
+
+# Keep Navigation classes
+-keep class androidx.navigation.** {*;}
+-keepclassmembers class * extends androidx.navigation.Navigator {
+    <init>(...);
+}
+
+# ================================================================================================
+# DATA CLASSES & MODELS RULES
+# ================================================================================================
+
+# Keep data classes
+-keepclassmembers class com.scrymz.bitebuddy.data.entity.** {
+    <fields>;
+    <init>(...);
+}
+
+# Keep constants
+-keep class com.scrymz.bitebuddy.Constants.** {*;}
+
+# Keep state classes
+-keep class com.scrymz.bitebuddy.domain.StateHandeling.** {*;}
+-keep class com.scrymz.bitebuddy.presentation.states.** {*;}
+
+# ================================================================================================
+# MAIN APPLICATION RULES
+# ================================================================================================
+
+# Keep MainActivity
+-keep class com.scrymz.bitebuddy.MainActivity {*;}
+
+# Keep BaseApplication
+-keep class com.scrymz.bitebuddy.di.BaseApplicationClass {*;}
+
+# Keep database helper
+-keep class com.scrymz.bitebuddy.core.DataBaseOpenHelper {*;}
+
+# ================================================================================================
+# REFLECTION RULES
+# ================================================================================================
+
+# Keep classes accessed via reflection
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+}
+
+# ================================================================================================
+# REMOVE LOGGING IN RELEASE
+# ================================================================================================
+
+# Remove logging code
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+
+# ================================================================================================
+# OPTIMIZATION SETTINGS
+# ================================================================================================
+
+# Enable aggressive optimization
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# Optimization options
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+
+# Allow obfuscation
+-repackageclasses ''
+-allowaccessmodification
+
+# ================================================================================================
+# ADDITIONAL SAFETY RULES
+# ================================================================================================
+
+# Keep native methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep enums
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Keep Parcelables
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+# Keep Serializable
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
