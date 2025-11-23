@@ -41,7 +41,7 @@ object InterstitialAdHelper {
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {
-                    Log.d(TAG, "✅ Interstitial ad loaded successfully")
+                    Log.d(TAG, "Interstitial ad loaded successfully")
                     interstitialAd = ad
                     isLoading = false
                 }
