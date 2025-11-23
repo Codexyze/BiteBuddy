@@ -1,6 +1,7 @@
 package com.scrymz.bitebuddy.presentation.screens
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -253,7 +254,16 @@ private fun StatCard(title: String, value: String, modifier: Modifier = Modifier
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
+        border = BorderStroke(
+            width = 2.dp,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.tertiary
+                )
+            )
+        )
     ) {
         Column(Modifier.padding(12.dp)) {
             Text(
@@ -292,7 +302,17 @@ fun FilterRow(
                 selected = false,
                 onClick = { onFilterByMonth(curMonth, curYear) },
                 label = { Text("This Month", maxLines = 1) },
-                leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null) },
+                border = BorderStroke(
+                    width = 1.dp, brush = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+
+
+                    )
+                )
             )
         }
         item {
@@ -300,7 +320,17 @@ fun FilterRow(
                 selected = false,
                 onClick = { onFilterByPain("Severe") },
                 label = { Text("Severe Pain", maxLines = 1) },
-                leadingIcon = { Icon(Icons.Default.LocalHospital, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Default.LocalHospital, contentDescription = null) },
+                border = BorderStroke(
+                    width = 1.dp, brush = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+
+
+                    )
+                )
             )
         }
         item {
@@ -308,7 +338,17 @@ fun FilterRow(
                 selected = false,
                 onClick = { onFilterByTimeOfDay("Morning") },
                 label = { Text("Morning", maxLines = 1) },
-                leadingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = null) }
+                leadingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = null) },
+                border = BorderStroke(
+                    width = 1.dp, brush = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+
+
+                    )
+                )
             )
         }
         item {
@@ -334,7 +374,13 @@ fun PeriodItem(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(6.dp)
+        elevation = CardDefaults.cardElevation(6.dp),
+        border = BorderStroke(2.dp, brush = Brush.linearGradient(
+            colors = listOf(
+                MaterialTheme.colorScheme.primary,
+                MaterialTheme.colorScheme.tertiary
+            )
+        ))
     ) {
         Column(Modifier.padding(14.dp)) {
             Row(
