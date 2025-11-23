@@ -1,5 +1,6 @@
 package com.scrymz.bitebuddy.presentation.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,9 +49,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.data.entity.FoodTable
@@ -430,7 +433,17 @@ fun TimeFilterRow(
             FilterChip(
                 selected = option == selectedTime,
                 onClick = { onTimeSelected(option) },
-                label = { Text(option) }
+                label = { Text(option, color = MaterialTheme.colorScheme.primary) },
+                border = BorderStroke(
+                    width = 1.dp, brush = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+
+
+                    )
+                )
             )
         }
     }
@@ -456,6 +469,15 @@ fun SummaryCard(title: String, value: String, modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        border = BorderStroke(
+            width = 3.dp,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.tertiary
+                )
+            )
         )
     ) {
         Column(
@@ -470,8 +492,18 @@ fun SummaryCard(title: String, value: String, modifier: Modifier = Modifier) {
             Spacer(Modifier.height(4.dp))
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary
+                fontSize = 26.sp,
+                fontWeight = FontWeight.ExtraBold,
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.tertiary
+                        )
+                    )
+                ),
+
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }
@@ -495,6 +527,15 @@ fun FoodItemCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        border = BorderStroke(
+            width = 2.dp,
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.tertiary
+                )
+            )
         )
     ) {
         Column(Modifier.padding(16.dp)) {

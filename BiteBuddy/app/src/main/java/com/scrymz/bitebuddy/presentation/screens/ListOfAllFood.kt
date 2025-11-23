@@ -1,5 +1,6 @@
 package com.scrymz.bitebuddy.presentation.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -24,6 +25,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -108,7 +111,20 @@ fun ListOfAllFood(
                     FilterChip(
                         selected = selectedType == type,
                         onClick = { selectedType = type },
-                        label = { Text(if (type == "All") "All Types" else type) }
+                        label = { Text(text =if (type == "All") "All Types" else type ,
+                            color = MaterialTheme.colorScheme.primary
+
+                        ) },
+                        border = BorderStroke(
+                            width = 1.dp, brush = Brush.linearGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.tertiary
+                                )
+
+
+                            )
+                        )
                     )
                 }
             }
@@ -205,8 +221,14 @@ fun FoodCard(food: Food, navController: NavController) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(8.dp),
+        border = BorderStroke(2.dp, brush = Brush.linearGradient(
+            colors = listOf(
+                MaterialTheme.colorScheme.primary,
+                MaterialTheme.colorScheme.tertiary
+            )
+        )),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface // ✅ Matches theme surface color
+            containerColor = MaterialTheme.colorScheme.surface // Matches theme surface color,
         ),
         modifier = Modifier
             .fillMaxWidth()
