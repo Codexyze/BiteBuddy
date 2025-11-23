@@ -246,6 +246,18 @@ data class GetAllImageState(
     val error: String ? = null
 )
 
+data class GetImageFoldersState(
+    val isLoading: Boolean = false,
+    val data: List<com.scrymz.bitebuddy.data.local.model.model.ImageFolder> = emptyList(),
+    val error: String = ""
+)
+
+data class GetImagesFromFolderState(
+    val isLoading: Boolean = false,
+    val data: List<Images> = emptyList(),
+    val error: String = ""
+)
+
 // ImageToProgress States
 data class UpsertImageToProgressState(
     val isLoading: Boolean = false,

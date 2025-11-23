@@ -22,7 +22,7 @@ import com.scrymz.bitebuddy.presentation.screens.ImageTrackerScreen
 import com.scrymz.bitebuddy.presentation.screens.InterstitialAdScreen
 import com.scrymz.bitebuddy.presentation.screens.PrivacyPolicyScreen
 import com.scrymz.bitebuddy.presentation.screens.ProgressScreen
-import com.scrymz.bitebuddy.presentation.screens.ProgressTrackerOnlyScreen
+import com.scrymz.bitebuddy.presentation.screens.ProgressTrackerScreen
 import com.scrymz.bitebuddy.presentation.screens.WaterIntakeScreen
 
 @Composable
@@ -76,12 +76,11 @@ fun BiteBuddy(modifier: Modifier = Modifier) {
             ProgressScreen(navController = navController)
         }
 
-        // New dedicated screens
         composable<IMAGEMAPPERSCREEN> {
             ImageTrackerScreen(navController = navController)
         }
         composable<PROGRESSTRACKERSCREEN> {
-            ProgressTrackerOnlyScreen(navController = navController)
+            ProgressTrackerScreen(navController = navController)
         }
 
     }
