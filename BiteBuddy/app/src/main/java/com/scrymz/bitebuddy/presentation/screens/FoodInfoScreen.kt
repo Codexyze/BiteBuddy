@@ -45,54 +45,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-@Composable
-fun InfoCard(title: String, value: String) {
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(6.dp),
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = title, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
-            Text(text = value, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
-        }
-    }
-}
 
-@Composable
-fun SectionHeader(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(vertical = 4.dp)
-    )
-}
-
-@Composable
-fun BooleanChip(label: String, isTrue: Boolean) {
-    val bgColor = if (isTrue) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-    val textColor = MaterialTheme.colorScheme.onPrimary
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bgColor, MaterialTheme.shapes.small)
-            .padding(12.dp)
-    ) {
-        Text(text = "$label: ${if (isTrue) "Yes" else "No"}", color = textColor, style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-// 🔧 Extension function for formatting numbers to 2 decimal places
-fun Double.format(): String = String.format("%.2f", this)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodInfoScreen(
@@ -252,3 +205,51 @@ fun getTodayDate(): String {
     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return sdf.format(Date())
 }
+@Composable
+fun InfoCard(title: String, value: String) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(6.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = title, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(text = value, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+        }
+    }
+}
+
+@Composable
+fun SectionHeader(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+        modifier = Modifier.padding(vertical = 4.dp)
+    )
+}
+
+@Composable
+fun BooleanChip(label: String, isTrue: Boolean) {
+    val bgColor = if (isTrue) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+    val textColor = MaterialTheme.colorScheme.onPrimary
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(bgColor, MaterialTheme.shapes.small)
+            .padding(12.dp)
+    ) {
+        Text(text = "$label: ${if (isTrue) "Yes" else "No"}", color = textColor, style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+// 🔧 Extension function for formatting numbers to 2 decimal places
+fun Double.format(): String = String.format("%.2f", this)

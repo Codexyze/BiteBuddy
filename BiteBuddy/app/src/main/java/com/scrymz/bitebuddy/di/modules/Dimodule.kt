@@ -32,7 +32,9 @@ object Dimodule {
         return Room.databaseBuilder(
               context = context,
                 FoodDatabase::class.java, "food_db"
-            ).fallbackToDestructiveMigration(true).build()
+            )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build()
     }
 
     @Singleton
@@ -41,7 +43,9 @@ object Dimodule {
          return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration(true).build().foodTableDao()
+        )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build().foodTableDao()
     }
 
 
@@ -52,7 +56,9 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration(true).build().menstrualPeriodDao()
+        )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build().menstrualPeriodDao()
     }
 
     @Singleton
@@ -61,7 +67,9 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration(true).build().waterInkateDao()
+        )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build().waterInkateDao()
     }
 
     @Singleton
@@ -70,7 +78,9 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration(true).build().exerciseDao()
+        )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build().exerciseDao()
     }
 
     @Singleton
@@ -79,7 +89,9 @@ object Dimodule {
         return Room.databaseBuilder(
             context = context,
             FoodDatabase::class.java, "food_db"
-        ).fallbackToDestructiveMigration(true).build().imageToProgressDao()
+        )
+            .fallbackToDestructiveMigrationOnDowngrade(dropAllTables = true)
+            .build().imageToProgressDao()
     }
 
 }
