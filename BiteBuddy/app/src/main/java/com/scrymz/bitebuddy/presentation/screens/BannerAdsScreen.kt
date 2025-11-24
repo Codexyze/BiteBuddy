@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ fun BannerAds(
         label = "banner_collapse"
     )
 
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -55,17 +57,21 @@ fun BannerAds(
         if (!hasError) {
             AndroidView(
                 factory = { ctx ->
+                    Log.d("BannerAd", "Creating new AdView")
                     AdView(ctx).apply {
                         setAdSize(AdSize.BANNER)
                         adUnitId = bannerId
 
                         adListener = object : AdListener() {
                             override fun onAdLoaded() {
+                                Log.d("BannerAd", "✅ Ad loaded successfully")
                                 isLoading = false
                                 hasError = false
                             }
 
                             override fun onAdFailedToLoad(adError: LoadAdError) {
+                                Log.e("BannerAd", "❌ Ad failed to load: ${adError.message}")
+                                Log.e("BannerAd", "Error code: ${adError.code}")
                                 isLoading = false
                                 hasError = true
                             }
@@ -91,11 +97,23 @@ fun BannerAds(
                             }
                         }
 
+                        Log.d("BannerAd", "Loading ad request...")
                         loadAd(AdRequest.Builder().build())
                     }
                 },
+                update = { adView ->
+                    // This is called on recomposition - do nothing to prevent reload
+                    Log.d("BannerAd", "AndroidView update called")
+                },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            // Cleanup on dispose
+            DisposableEffect(Unit) {
+                onDispose {
+                    Log.d("BannerAd", "Disposing AdView")
+                }
+            }
 
             if (isLoading) {
                 CircularProgressIndicator(

@@ -1,5 +1,6 @@
 package com.scrymz.bitebuddy.presentation.screens
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,20 +15,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,11 +40,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.viewmodels.FoodViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 data class NutrientInfo(
     val name: String,
@@ -64,9 +67,9 @@ fun MicroDetailsScreen(
     viewModel: FoodViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val context = LocalContext.current
     val getByDateState by viewModel.getByDateState.collectAsState()
     var selectedDate by remember { mutableStateOf(getTodayDate()) }
-    var showDateDropdown by remember { mutableStateOf(false) }
 
     // Load data for selected date
     LaunchedEffect(selectedDate) {
@@ -93,8 +96,7 @@ fun MicroDetailsScreen(
             DateSelectionCard(
                 selectedDate = selectedDate,
                 onDateChange = { selectedDate = it },
-                showDropdown = showDateDropdown,
-                onDropdownChange = { showDateDropdown = it }
+                context = context
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -125,65 +127,74 @@ fun MicroDetailsScreen(
 fun DateSelectionCard(
     selectedDate: String,
     onDateChange: (String) -> Unit,
-    showDropdown: Boolean,
-    onDropdownChange: (Boolean) -> Unit
+    context: android.content.Context
 ) {
+    val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
+
+    fun openDatePicker() {
+        val calendar = Calendar.getInstance()
+        // Parse the current selected date to set initial date in picker
+        try {
+            val date = dateFormatter.parse(selectedDate)
+            if (date != null) {
+                calendar.time = date
+            }
+        } catch (e: Exception) {
+            // If parsing fails, use today's date
+        }
+
+        DatePickerDialog(
+            context,
+            { _, year, month, day ->
+                val cal = Calendar.getInstance()
+                cal.set(year, month, day)
+                onDateChange(dateFormatter.format(cal.time))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(
-                Icons.Default.CalendarToday,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
+
             OutlinedTextField(
                 value = selectedDate,
-                onValueChange = onDateChange,
-                label = { Text("Analysis Date (yyyy-MM-dd)") },
+                onValueChange = { },
+                label = { Text("Analysis Date") },
                 modifier = Modifier.weight(1f),
-                singleLine = true
+                singleLine = true,
+                readOnly = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                    disabledBorderColor = MaterialTheme.colorScheme.outline,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                enabled = false
             )
 
-            Box {
-                IconButton(
-                    onClick = { onDropdownChange(!showDropdown) },
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(
-                        Icons.Default.ArrowDropDown,
-                        contentDescription = "Select Date",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                DropdownMenu(
-                    expanded = showDropdown,
-                    onDismissRequest = { onDropdownChange(false) }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text("Today") },
-                        onClick = {
-                            onDateChange(getTodayDate())
-                            onDropdownChange(false)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("Yesterday") },
-                        onClick = {
-                            onDateChange(getYesterdayDate())
-                            onDropdownChange(false)
-                        }
-                    )
-                }
+            IconButton(
+                onClick = { openDatePicker() },
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    Icons.Default.CalendarToday,
+                    contentDescription = "Select Date",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }
