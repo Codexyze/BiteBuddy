@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BiteBuddy</string>
+    <string name="update_notification">bite-buddy-upadte</string>
 </resources>
