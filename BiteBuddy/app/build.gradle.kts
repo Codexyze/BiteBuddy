@@ -111,4 +111,11 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.2.0")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+
+    // Firebase
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-inappmessaging-display-ktx")
+
+
 }
