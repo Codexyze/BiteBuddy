@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.scrymz.bitebuddy" />
+                  <option name="mobileSdkAppId" value="1:1021543385390:android:1cf000dc45aac63e6252bf" />
+                  <option name="projectId" value="bitebuddy-2dee4" />
+                  <option name="projectNumber" value="1021543385390" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
