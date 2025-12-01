@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#64DF69</color>
+    <color name="notification_color">#FF8BC34A</color>
 </resources>
