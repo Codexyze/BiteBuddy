@@ -67,6 +67,12 @@ data class GetCaloriesState(
     val error: String = ""
 )
 
+data class GetAllDistinctDatesState(
+    val isLoading: Boolean = false,
+    val data: List<String> = emptyList(),
+    val error: String = ""
+)
+
 //men
 data class UpsertPeriodState(
     val isLoading: Boolean = false,

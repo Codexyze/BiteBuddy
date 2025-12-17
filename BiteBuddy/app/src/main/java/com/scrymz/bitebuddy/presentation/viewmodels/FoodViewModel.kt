@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.scrymz.bitebuddy.data.entity.FoodTable
 import com.scrymz.bitebuddy.domain.StateHandeling.ResultState
 import com.scrymz.bitebuddy.domain.usecases.DeleteFoodUseCase
+import com.scrymz.bitebuddy.domain.usecases.GetAllDistinctDatesWithEntriesUseCase
 import com.scrymz.bitebuddy.domain.usecases.GetAllFoodUseCase
 import com.scrymz.bitebuddy.domain.usecases.GetByConsumedTimeUseCase
 import com.scrymz.bitebuddy.domain.usecases.GetByDateUseCase
@@ -12,6 +13,7 @@ import com.scrymz.bitebuddy.domain.usecases.GetCaloriesUseCase
 import com.scrymz.bitebuddy.domain.usecases.GetProteinUseCase
 import com.scrymz.bitebuddy.domain.usecases.UpsertFoodUseCase
 import com.scrymz.bitebuddy.presentation.states.DeleteFoodState
+import com.scrymz.bitebuddy.presentation.states.GetAllDistinctDatesState
 import com.scrymz.bitebuddy.presentation.states.GetAllFoodState
 import com.scrymz.bitebuddy.presentation.states.GetByConsumedTimeState
 import com.scrymz.bitebuddy.presentation.states.GetByDateState
@@ -34,7 +36,8 @@ class FoodViewModel @Inject constructor(
     private val getByDateUseCase: GetByDateUseCase,
     private val getByConsumedTimeUseCase: GetByConsumedTimeUseCase,
     private val getProteinUseCase: GetProteinUseCase,
-    private val getCaloriesUseCase: GetCaloriesUseCase
+    private val getCaloriesUseCase: GetCaloriesUseCase,
+    private val getAllDistinctDatesWithEntriesUseCase: GetAllDistinctDatesWithEntriesUseCase
 ) : ViewModel() {
 
     // ---------- STATE FLOWS ----------
@@ -58,6 +61,9 @@ class FoodViewModel @Inject constructor(
 
     private val _getCaloriesState = MutableStateFlow(GetCaloriesState())
     val getCaloriesState = _getCaloriesState.asStateFlow()
+
+    private val _getAllDistinctDatesState = MutableStateFlow(GetAllDistinctDatesState())
+    val getAllDistinctDatesState = _getAllDistinctDatesState.asStateFlow()
 
     // ---------- FUNCTIONS ----------
     fun upsertFood(food: FoodTable) {
@@ -139,6 +145,18 @@ class FoodViewModel @Inject constructor(
                     is ResultState.loading -> _getCaloriesState.value = GetCaloriesState(isLoading = true)
                     is ResultState.Sucess -> _getCaloriesState.value = GetCaloriesState(value = result.data)
                     is ResultState.Error -> _getCaloriesState.value = GetCaloriesState(error = result.error)
+                }
+            }
+        }
+    }
+
+    fun getAllDistinctDates() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getAllDistinctDatesWithEntriesUseCase().collect { result ->
+                when (result) {
+                    is ResultState.loading -> _getAllDistinctDatesState.value = GetAllDistinctDatesState(isLoading = true)
+                    is ResultState.Sucess -> _getAllDistinctDatesState.value = GetAllDistinctDatesState(data = result.data)
+                    is ResultState.Error -> _getAllDistinctDatesState.value = GetAllDistinctDatesState(error = result.error)
                 }
             }
         }
