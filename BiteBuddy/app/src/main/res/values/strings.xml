@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">BiteBuddy</string>
     <string name="update_notification">bite-buddy-upadte</string>
+    <string name="consistency_tracker">Consistency Tracker</string>
+    <string name="streak_maintained">Streak Maintained:</string>
+    <string name="days">days</string>
+    <string name="food_log_for">Food Log for</string>
+    <string name="no_entries">No entries for this day</string>
 </resources>

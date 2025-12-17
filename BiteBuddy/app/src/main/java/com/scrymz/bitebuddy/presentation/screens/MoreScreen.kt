@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material.icons.outlined.WaterDrop
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.CONSISTENCYTRACKERSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.EXERCISESCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PROGRESSSCREEN
@@ -51,6 +53,13 @@ fun MoreScreen(navController: NavController) {
                     text = "Water Intake",
                     icon = { Icon(imageVector = Icons.Outlined.WaterDrop, contentDescription = "Water") }
                 ) { navController.navigate(WATERINTAKESCREEN) }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                ThemedMenuButton(
+                    text = "Consistency Tracker",
+                    icon = { Icon(imageVector = Icons.Outlined.CalendarMonth, contentDescription = "Consistency") }
+                ) { navController.navigate(CONSISTENCYTRACKERSCREEN) }
 
                 Spacer(modifier = Modifier.height(16.dp))
 

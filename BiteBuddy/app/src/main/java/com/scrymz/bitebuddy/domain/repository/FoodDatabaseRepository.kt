@@ -13,4 +13,5 @@ interface FoodDatabaseRepository {
     fun getByConsumedTime(time: String): Flow<ResultState<List<FoodTable>>>
     fun getOnlyProtein(date: String): Flow<ResultState<Double>>
     fun getOnlyCalories(date: String): Flow<ResultState<Double>>
+    fun getAllDistinctDatesWithEntries(): Flow<ResultState<List<String>>>
 }
