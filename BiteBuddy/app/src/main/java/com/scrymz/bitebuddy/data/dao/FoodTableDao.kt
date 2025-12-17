@@ -50,4 +50,8 @@ interface FoodTableDao {
     // ✅ Get calories grouped by date (for charts)
     @Query("SELECT dateConsumed, SUM(calories) as totalCalories FROM ${Constants.FOODTABLETRACK} GROUP BY dateConsumed ORDER BY dateConsumed ASC")
     fun getCaloriesOverDays(): Flow<List<CaloriesDay>>
+
+    // ✅ Get all distinct dates where food was logged (for consistency tracker)
+    @Query("SELECT DISTINCT dateConsumed FROM ${Constants.FOODTABLETRACK} WHERE dateConsumed IS NOT NULL AND dateConsumed != '' ORDER BY dateConsumed DESC")
+    fun getAllDistinctDatesWithEntries(): Flow<List<String>>
 }

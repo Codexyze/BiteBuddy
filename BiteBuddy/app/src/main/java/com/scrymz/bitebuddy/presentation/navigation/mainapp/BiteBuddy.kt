@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.scrymz.bitebuddy.presentation.navigation.routes.ADSSCREEN
+import com.scrymz.bitebuddy.presentation.navigation.routes.CONSISTENCYTRACKERSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.EXERCISESCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.FOODINFOSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.HOMESCREEN
@@ -15,6 +16,7 @@ import com.scrymz.bitebuddy.presentation.navigation.routes.PRIVACYPOLICYSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PROGRESSSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.PROGRESSTRACKERSCREEN
 import com.scrymz.bitebuddy.presentation.navigation.routes.WATERINTAKESCREEN
+import com.scrymz.bitebuddy.presentation.screens.ConsistencyTrackerScreen
 import com.scrymz.bitebuddy.presentation.screens.ExerciseScreen
 import com.scrymz.bitebuddy.presentation.screens.FoodInfoScreen
 import com.scrymz.bitebuddy.presentation.screens.HomeScreen
@@ -81,6 +83,10 @@ fun BiteBuddy(modifier: Modifier = Modifier) {
         }
         composable<PROGRESSTRACKERSCREEN> {
             ProgressTrackerScreen(navController = navController)
+        }
+
+        composable<CONSISTENCYTRACKERSCREEN> {
+            ConsistencyTrackerScreen(navController = navController)
         }
 
     }

@@ -48,3 +48,7 @@ object IMAGEMAPPERSCREEN
 
 @Serializable
 object PROGRESSTRACKERSCREEN
+
+@Serializable
+object CONSISTENCYTRACKERSCREEN
+

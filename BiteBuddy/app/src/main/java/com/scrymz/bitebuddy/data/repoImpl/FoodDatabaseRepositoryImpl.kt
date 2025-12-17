@@ -87,4 +87,15 @@ class FoodDatabaseRepositoryImpl @Inject constructor(
             emit(ResultState.Error("Failed to get calories: ${e.message}"))
         }
     }
+
+    override fun getAllDistinctDatesWithEntries(): Flow<ResultState<List<String>>> = flow {
+        emit(ResultState.loading)
+        try {
+            dao.getAllDistinctDatesWithEntries().collect { dates ->
+                emit(ResultState.Sucess(dates))
+            }
+        } catch (e: Exception) {
+            emit(ResultState.Error("Failed to get dates: ${e.message}"))
+        }
+    }
 }
