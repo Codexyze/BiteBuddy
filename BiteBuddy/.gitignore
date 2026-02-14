@@ -20,3 +20,8 @@ gradle.properties
 .kotlin
 ./.idea
 .gradle
+
+# Build artifacts
+/app/release/
+*.apk
+*.aab
