@@ -12,13 +12,13 @@ plugins {
 //val admobAppId: String = project.findProperty("ADMOB_APP_ID") as? String ?: ""
 //val interstitialAdId: String = project.findProperty("INTERSTITIAL_AD_ID") as? String ?: ""
 val admobAppId: String = project.findProperty("ADMOB_APP_ID") as? String
-    ?: throw GradleException("ADMOB_APP_ID not set in gradle.properties!")
+    ?:"ca-app-pub-3940256099942544~3347511713"
 
 val interstitialAdId: String = project.findProperty("INTERSTITIAL_AD_ID") as? String
-    ?: throw GradleException("INTERSTITIAL_AD_ID not set in gradle.properties!")
+    ?:"ca-app-pub-3940256099942544/1033173712"
 
 val banner_AdsId: String = project.findProperty("BANNER_AD_ID") as? String
-    ?: throw GradleException("BANNER_ADS_ID not set in gradle.properties!")
+    ?:"ca-app-pub-3940256099942544/6300978111"
 
 android {
     namespace = "com.scrymz.bitebuddy"
